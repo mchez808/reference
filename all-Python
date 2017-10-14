@@ -1,0 +1,1610 @@
+
+# 9/30/2017: Alan says use Pycharm instead of Spyder (ask him why)
+# common mistakes i make in Python
+{
+	# data frames (pandas)
+	{
+		count() vs value_count()
+			count() seems to involve a logical conditional
+					e.g. ecom[ecom['Language']=='en'].count()
+			value_counts() seems to do grouping w/o a logical conditional
+					ecom['AM or PM'].value_counts()
+		
+		slicing a df:
+		  WRONG: sal[3:4,3:4]
+		  --->--->--->--->--->---> RIGHT: idk yet
+
+		  WRONG: sal['JobTitle','BasePay']
+		  --->--->--->--->--->---> RIGHT: sal[['JobTitle','BasePay']]
+		  
+		  lambda x: x*2
+		  
+		  
+		  
+		  
+		  WRONG: 
+		  --->--->--->--->--->---> RIGHT: 
+		  
+		WRONG: sal['EmployeeName'=='JOSEPH DRISCOLL']
+		--->--->--->--->--->---> RIGHT: sal['EmployeeName']=='JOSEPH DRISCOLL'
+		
+		WRONG: sal[sal['TotalPayBenefits'].max()]['EmployeeName']
+		--->--->--->--->--->---> RIGHT: sal[sal['TotalPayBenefits']==sal['TotalPayBenefits'].max()]['EmployeeName']
+
+		-	- GROUPBY	-	-
+		#1
+			WRONG: sal['BasePay'].groupby(sal['Year'])
+			WRONG: sal.groupby('Year')
+			WRONG: print(sal.groupby('Year'))
+			WRONG: sal.groupby('Year').mean('BasePay')
+			--->--->--->--->--->---> RIGHT: sal.groupby('Year').mean()['BasePay']
+		#2	
+			Q: How many people made the purchase during the AM and how many people made the purchase during PM ?
+			WRONG: ecom.groupby('AM or PM').value_counts()
+			--->--->--->--->--->--->--->--->--->--->--->---> HINT: doesn't even use groupby()!!!
+			--->--->--->--->--->--->--->--->--->--->--->---> --->--->--->--->--->--->--->--->--->--->--->---> RIGHT: ecom['AM or PM'].value_counts()
+			
+		-	- /GROUPBY	-	-
+		
+		WRONG: sal['JobTitle'].unique().head(5)
+		--->--->--->--->--->---> RIGHT: sal['JobTitle'].value_counts().head(5) 
+		
+		TOUGH CHALLENGE QUESTION:
+		#** How many Job Titles were represented by only one person in 2013? (e.g. Job Titles with only one occurence in 2013?) **
+		inner-most step: sal['Year']
+		next step: --->--->--->--->--->--->sal['Year']==2013
+		next step: --->--->--->--->--->--->--->--->--->--->--->--->--->--->next step: sal[sal['Year']==2013]['JobTitle']
+		--->--->--->--->--->--->--->--->--->--->	WRONG: sal[sal['Year']==2013].value_counts()==1
+		--->--->--->--->--->--->--->--->--->--->	RIGHT: sal[sal['Year']==2013]['JobTitle'].value_counts()==1
+		
+		defining a func w/ conditional inside it:
+		WRONG: 
+			def func1(str):
+				if('x' in str.lower_case())
+					return(True)
+				else
+					return(False)
+		#Now, why is this wrong???
+		RIGHT: 
+		--->--->--->--->	def func1(str):
+		--->--->--->--->		if 'x' in str.lower():
+		--->--->--->--->			return(True)
+		--->--->--->--->		else:
+		--->--->--->--->			return(False)
+		# AHA!  Did you catch 2 errors in the "if" line above?
+		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->---> not lower_case() but lower()
+		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->
+		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->
+		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->---> 
+		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->---> 
+	}	
+}
+
+# everything Python
+
+https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/edit#
+
+# files and directories
+{
+	# work directory
+		import os
+		path = "C:\wd\Python"
+		os.chdir(path)
+		cwd = os.getcwd()
+			# https://www.tutorialspoint.com/python/os_chdir.htm
+		os.listdir()
+
+	# Reading and Writing Files
+	f = open('test.py', "r")
+}
+
+# basics of libraries and data structures
+{
+	# array / list
+	{
+		print("Hello World!")
+		squares_list = [0, 1, 4, 9, 16, 25]
+		# Print the first element of squares_list
+		print (squares_list[0])
+			# !-- odd quirk about Python array indices
+
+		# Print the second to fourth elements of squares_list
+		print (squares_list[1:4])
+			# !-- odd quirk about Python array indices
+	}
+
+	# strings
+	{
+		# length
+		str_len = len(str1)
+
+		str_new = "Machine Learning is awesome!"
+		# Print last eight characters of string str_new (the length of str_new is 28 characters).
+		print (str_new[20:28])
+
+		str2 = "I am using "
+		str3 = "Python"
+
+		# concatenate
+		str4 = str2 + str3
+
+		# string1.format()
+			planet = "Earth"
+			diameter = 12742
+			'The diameter of {0} is {1} kilometers'.format(planet, diameter)
+			'The diameter of {} is {} kilometers'.format(planet, diameter)
+	}
+
+	# dictionary
+	{
+		dict1 = { 'Age': 16, 'Name': 'Max', 'Sports': 'Cricket'}
+
+		# Update the value of Age to 18
+		dict1['Age'] = 18
+
+		# Print the value of Age
+		print (dict1['Age'])
+
+		# nested dictionaries
+		dict2 = {'k1':[1,2,3]}
+		print(dict2['k1'])	# returns [1,2,3]
+		print(dict2['k1'][1])	# returns [2]
+
+		# Store the keys of dictionary dict1 to dict_keys
+		dict_keys = dict1.keys()
+	}
+
+	# conditionals
+	{
+		a=3
+		b=4
+		if a > b:
+			print (a-b)
+		else:
+			print (a+b)
+
+		# Python abbreviates elseif to elif
+		if 1 == 2:
+			print('first')
+		elif 3 == 3:
+			print('middle')
+		else:
+			print('Last')
+	}
+
+	# iterative loops
+	{
+		# Create a list of first five numbers
+		ls=[]
+		for x in range(5):
+			ls.append(x)
+		# NOTE!! See list comprehension for shortened code of equivalent function.
+
+		sum=0
+		# Store sum all the even numbers of the list ls in sum
+
+		for x in ls:
+			if x%2 == __:
+				sum += x
+
+		print (sum)
+	}
+}
+
+# Intro: Numbers, strings and lists
+{
+	# Numbers
+	{
+		# numeric data types, division, powers, and _
+			# returns int:
+			8 / 5
+
+			# returns float:
+			8 / 5.0
+
+			# floor division
+			17 // 3.0
+
+			# modulus
+			17 % 3
+
+			# powers
+			5 ** 2
+
+			# In the interactive mode (in-line console): underscore _ receives the last printed expression. try it!
+			3+4
+			_*3
+
+			# Python also supports Decimal and Fraction
+
+	}
+
+	# strings
+	{
+		# equivalency of single-quotes and double-quotes
+			'doesn\'t'
+			"doesn't"
+
+			'"Yes,\" he said.'
+			"\"Yes,\" he said."
+		# print command
+			# ex 1
+				# unintended
+					'"Isn\'t," she said.'
+				# intended
+					print '"Isn\'t," she said.'
+			# ex 2
+				s = 'First line.\nSecond line.'  # \n means newline
+				print s  # with print, \n produces a new line
+
+			# raw string
+				# unintended! :(
+					print 'C:\some\name'  # here \n means newline!
+				# intended! :)
+					print r'C:\some\name'  # note the r before the quote
+
+		# concatenate strings
+			'text1' 'text2'
+			text = ('12345678901234567890'
+			' 12345678901234567890')
+
+		# index of a string
+			word = 'Python'
+			word[0] + word[3]
+			word[-1]
+			word[0:2]
+
+		# Python strings cannot be changed — they are immutable. Therefore, assigning to an indexed position in the string results in an error.
+			word = 'Hello'
+			word[0] = 'J'  ## returns error
+			'J' + word[1:]
+
+		# string length
+			len(word)
+
+		# MORE on strings:
+		https://docs.python.org/2.7/library/stdtypes.html#string-methods
+	}
+
+	# lists
+	{
+		squares = [1, 4, 9, 16, 25]
+		squares[0]
+		squares[-3:]
+
+		# concatenation
+		squares + [36, 49, 64, 81, 100]
+
+		# append
+		squares.append(36)
+
+		cubes = [1, 4, 9, 16, 25]
+		cubes[1:6] = [2**3, 3**3, 4**3, 5**3, 6**3]
+
+		len(cubes)
+
+		# list of lists
+			a = ['a', 'b', 'c']
+			n = [1, 2, 3]
+			x = [a, n]
+
+	# merging lists: use + for one single-level list
+		# instead of [list1, list2], which results in nested lists
+
+	}
+
+	# First Steps Towards Programming
+	{
+		# Fibonacci
+		a, b = 1.0, 2.0
+		while b < 100:
+			print b/a
+			a, b = b, b+a
+
+		# note: A trailing comma (ending a print line) avoids the newline after the output:
+		a, b = 1, 2
+		while b < 10:
+			print b,
+			a, b = b, b+a
+
+	}
+}
+
+# Functions, Methods, Packages (basics)
+{
+	# Functions don't belong to a class
+		sorted()
+		print()
+		type()
+		str()
+		int()
+
+	# Methods are functions that belong to each Python object.
+
+	# examples of methods for the class 'list':
+		# these don't change the list
+			list.index()
+			list.count()
+		# these DO change the list
+			list.append()
+			list.remove()
+			list.reverse()
+
+	# Packages
+		# a directory of Python scripts
+		# each script is a module. each module specifies functions, methods, and types
+
+			# pip - package management system.
+			http://pip.readthedocs.io/en/stable/installing/
+			python get-pip.py
+
+	# general import:
+		import math
+	# selective import:
+		from math import pi
+		# then I don't need to name the package explicitly (the math.pi .. just pi is fine)
+
+	# example: pi (3.1415..)
+		import math
+		r = .45
+		C = 2*math.pi*r
+
+	# example: abbreviation
+		import math as m
+		r = .45
+		C = 2*m.pi*r
+
+}
+
+# Packages for data science
+{
+	''' The following are a list of libraries, you will need for any scientific computations and data analysis:
+	Numpy - to efficiently work with arrays
+	Matplotlib - for data visualization
+	Seaborn - easier to plot graphs in Python
+	Scikit-learn - a one-stop shop for machine learning
+	pandas - data manipulation and analysis. from the term "panel data"
+		easily reads/writes to/from spreadsheets
+		pandas is a data-storing powerhouse
+	scipy - package that contains scientific functions in Python
+		e.g. subpackage linalg
+		example: this imports only the Linear Algebra inverse function '''
+		from scipy.linalg import inv as my_inv
+
+	# Numpy
+	{
+	'''
+		a GRRRREAT TUTORIAL
+			http://cs231n.github.io/python-numpy-tutorial/#numpy-arrays
+		arrays allow for VECTOR OPERATIONS, to be performed over entire array, while with lists we cannot.
+			and it's done FAST
+		'''
+		
+		# example of looping to generate list
+			data = [np.random.normal(0, std, 100) for std in range(1, 4)]
+			# true length = 3, ONLY 3 elements in list, NOT 4!
+
+		# note: bmi is an array
+		bmi > 23 #returns array of boolean elements
+		bmi[bmi > 23] #returns subset array, of shorter length
+
+		# N-dimensional array
+		{
+			{
+			''' 2D NumPy Array:
+				np_2d[0] selects row 1
+				np_2d[0][2] selects the element in row 1, column 3
+				np_2d[0,2] does the same.
+				np_2d[,1:3] selects all rows, and columns 2 and 3
+					A LITTLE WEIRD HUH?  I'll probably lead to a mistake here.
+			'''
+			}
+
+				{	# exercises on N-dimensional arrays
+					{
+						baseball = [[180, 78.4], [215, 102.7], [210, 98.5], [188, 75.2]]
+						# Import numpy
+						import numpy as np
+
+						# Create a 2D numpy array from baseball: np_baseball
+						np_baseball = np.array(baseball)
+
+						# Print out the type of np_baseball
+						print(type(np_baseball))
+
+						# Print out the shape of np_baseball
+						print(np_baseball.shape)
+					}
+
+					{	# slicing 2D NumPy Arrays
+						# Create np_baseball (2 cols)
+						np_baseball = np.array(baseball)
+
+						# Print out the 50th row of np_baseball
+						# note: all are equivalent
+							print(np_baseball[49,])
+							print(np_baseball[49])
+							print(np_baseball[49,:])
+					}
+				}
+		}
+
+		# NumPy summary statistics
+		# (search term: numpy info -- note that info is NOT a function, but I mentally associate it as such)
+		{
+			''' import numpy as np
+			np.mean(x)
+			np.median(x)
+			'''
+
+			# Create np_height from np_baseball
+			# This gets only the first column
+			np_height = np_baseball[:,0]
+
+			# Print out the standard deviation on height. Replace 'None'
+			stddev = np.std(np_baseball[:,0])
+			print("Standard Deviation: " + str(stddev))
+
+			# Print out correlation between first and second column. Replace 'None'
+			corr = np.corrcoef(np_baseball[:,0], np_baseball[:,1])
+			print("Correlation: " + str(corr))
+
+
+			# precondition: heights and positions are available as lists
+
+			# Import numpy
+			import numpy as np
+
+			# Convert positions and heights to numpy arrays: np_positions, np_heights
+			np_positions = np.array(positions)
+			np_heights = np.array(heights)
+
+			# Heights of the goalkeepers: gk_heights
+			gk_heights = np_heights[np_positions == 'GK']
+			# Heights of the other players: other_heights
+			other_heights = np_heights[np_positions != 'GK']
+
+			# Print out the median height of goalkeepers. Replace 'None'
+			print("Median height of goalkeepers: " + str(np.median(gk_heights)))
+			# Print out the median height of other players. Replace 'None'
+			print("Median height of other players: " + str(np.median(other_heights)))
+
+		}
+
+	}
+	print("hi")
+
+	Scikit
+	{
+	https://www.analyticsvidhya.com/blog/2015/01/scikit-learn-python-machine-learning-tool/
+
+		Scikit-learn is probably the most useful library for machine learning in Python. It is on NumPy, SciPy and matplotlib, this library contains a lot of effiecient tools for machine learning and statistical modeling including classification, regression, clustering and dimensionality reduction.
+
+		CONS (disadvantages)
+		Please note that scikit-learn is used to build models. It should NOT be used for reading the data, manipulating and summarizing it. There are better libraries for that (e.g. NumPy, Pandas etc.)
+
+	Components
+		Supervised learning algorithms:
+			Think of any supervised learning algorithm you might have heard about and there is a very high chance that it is part of scikit-learn. Starting from Generalized linear models (e.g Linear Regression), Support Vector Machines (SVM), Decision Trees to BAYESIAN methods – all of them are part of scikit-learn toolbox. The spread of algorithms is one of the big reasons for high usage of scikit-learn. I started using scikit to solve supervised learning problems and would recommend that to people new to scikit / machine learning as well.
+		Cross-validation:
+			There are various methods to check the accuracy of supervised models on unseen data
+		Unsupervised learning algorithms:
+			Again there is a large spread of algorithms in the offering – starting from CLUSTERING, factor analysis, PRINCIPAL COMPONENT ANALYSIS to unsupervised neural networks.
+		Various TOY DATASETS:
+			This came in handy while learning scikit-learn. I had learnt SAS using various academic datasets (e.g. IRIS dataset, Boston House prices dataset). Having them handy while learning a new library helped a lot.
+		Feature extraction:
+			Useful for extracting features from images and text (e.g. Bag of words)
+
+
+	example
+
+		We will build a logistic regression on IRIS dataset:
+
+		Step 1: Import the relevant libraries and read the dataset
+		{
+			import numpy as np
+			import matplotlib as plt
+			from sklearn import datasets
+			from sklearn import metrics
+			from sklearn.linear_model import LogisticRegression
+		}
+	}
+
+
+	# Four chapters on Data Analytics in Python:
+	# 3) Exploratory Data Analysis, 4) Data Munging using Pandas, 5) Predictive Models, 6) improving these models
+	{
+		# Chapter 3: Exploratory Data Analysis
+		{
+			# library: Pandas (i think)
+			# Exploratory
+			{
+				describe()
+				value_counts()	# occurs in 3 examples
+				hist()
+				boxplot()
+				crosstab()
+			}
+
+			# data frame intro
+			{
+				# from Udemy course:
+				# how to build a data frame:
+				{
+					# way 1: step by step
+						data = {'A':['foo','foo','foo','bar','bar','bar'],
+							 'B':['one','one','two','two','one','one'],
+							   'C':['x','y','x','y','x','y'],
+							   'D':[1,3,2,5,4,1]}
+						df = pd.DataFrame(data)
+						
+					# way 2: skipping the middle step
+						df = pd.DataFrame({'col1':[1,2,3,np.nan],
+										   'col2':[np.nan,555,666,444],
+										   'col3':['abc','def','ghi','xyz']})
+				}
+			
+				import pandas as pd
+				train = pd.read_csv("https://s3-ap-southeast-1.amazonaws.com/av-datahack-datacamp/train.csv")
+				test = pd.read_csv("https://s3-ap-southeast-1.amazonaws.com/av-datahack-datacamp/test.csv")
+
+				print (train.head(5) )
+
+				# Store total number of observation in training dataset
+				train_length = len (train)
+
+				# Store total number of columns in testing data set
+				test_col = len ( test.columns)
+
+				# pandas data frame from Udemy course:
+				{
+					import pandas as pd
+					import numpy as np
+					from numpy.random import randn
+					np.random.seed(101)
+					df = pd.DataFrame(randn(5,4),index='A B C D E'.split(),columns='W X Y Z'.split())
+
+					# get column names (colnames)
+					df.columns.tolist()
+					
+					### Selection and Indexing
+						df['W']
+						df[['W','Z']]
+						df['new'] = df['W'] + df['Y']
+						## Removing Columns
+						df.drop('new',axis=1)
+						df.drop('new',axis=1,inplace=True)
+						## removing rows
+						df.drop('E',axis=0)
+						## Selecting Rows
+						df.loc['A']
+						df.iloc[2]
+						df.loc['B','Y']
+						df.loc[['A','B'],['W','Y']]
+					### Conditional Selection
+						df>0
+						df[df>0]
+						df[df['W']>0]
+						df[df['W']>0]['Y']
+						df[df['W']>0][['Y','X']]
+						df[(df['W']>0) & (df['Y'] > 1)]
+					# Reset to default 0,1...n index
+						df.reset_index()
+						newind = 'CA NY WY OR CO'.split()
+						df['States'] = newind
+						df.set_index('States')
+						df.set_index('States',inplace=True)
+					## Multi-Index and Index Hierarchy
+						# Index Levels
+						outside = ['G1','G1','G1','G2','G2','G2']
+						inside = [1,2,3,1,2,3]
+						hier_index = list(zip(outside,inside))
+						hier_index = pd.MultiIndex.from_tuples(hier_index) #custom function, not to worry about
+						df.loc['G1']
+						df.loc['G1'].loc[1]
+						df.index.names = ['Group','Num']
+						## cross-section DataFrame.method
+							df.xs('G1')
+							df.xs(['G1',1])
+							df.xs(1,level='Num')
+
+					# NaN
+					{
+						df.dropna()
+							df.dropna(axis=1)
+							df.dropna(thresh=2)
+						df.fillna(value='FILL VALUE')
+					}
+
+					# group by (for data frames)
+					{
+						data = {'Company':['GOOG','GOOG','MSFT','MSFT','FB','FB'],
+							   'Person':['Sam','Charlie','Amy','Vanessa','Carl','Sarah'],
+							   'Sales':[200,120,340,124,243,350]}
+						df = pd.DataFrame(data)
+						by_comp = df.groupby("Company")
+						by_comp.describe().transpose()
+
+					}
+
+					# concatenation, merging and joining
+					{
+						pd.concat([df1,df2,df3])
+						pd.concat([df1,df2,df3],axis=1)
+
+						# data to use in merging
+							left = pd.DataFrame({'key': ['K0', 'K1', 'K2', 'K3'],
+												 'A': ['A0', 'A1', 'A2', 'A3'],
+												 'B': ['B0', 'B1', 'B2', 'B3']})
+
+							right = pd.DataFrame({'key': ['K0', 'K1', 'K2', 'K3'],
+													  'C': ['C0', 'C1', 'C2', 'C3'],
+													  'D': ['D0', 'D1', 'D2', 'D3']})
+						pd.merge(left,right,how='inner',on='key')
+						pd.merge(left, right, on=['key1', 'key2'])
+
+						# data to use in joining
+							left = pd.DataFrame({'A': ['A0', 'A1', 'A2'],
+												 'B': ['B0', 'B1', 'B2']},
+												  index=['K0', 'K1', 'K2'])
+
+							right = pd.DataFrame({'C': ['C0', 'C2', 'C3'],
+												'D': ['D0', 'D2', 'D3']},
+												  index=['K0', 'K2', 'K3'])
+
+						left.join(right)
+						left.join(right, how='outer')
+					}
+
+					# other operations in PANDAS
+					{
+						df.head()
+						df['col2'].unique()
+						df['col2'].nunique() # the COUNT of unique elements
+						df['col2'].value_counts()
+						# Selecting Data
+							newdf = df[(df['col1']>2) & (df['col2']==444)]
+						# Apply functions over a data frame
+							def times2(x):
+								return x*2
+							df['col2'].apply(times2)
+							df['col1'].apply(lambda x: x*2)
+							df['col3'].apply(len)
+							df['col1'].sum()
+						# Permanently Removing a Column
+							del df['col1']
+						# Get column and index names:
+							df.columns
+							df.index
+						# sorting and ordering a data frame
+							df.sort_values(by='col2') #inplace=False by default
+							
+							df.isnull()
+							df.dropna()
+						# Filling in NaN values with something else: 
+							df.fillna('BEER')
+						# Pivot Table
+							data = {'A':['foo','foo','foo','bar','bar','bar'],
+								 'B':['one','one','two','two','one','one'],
+								   'C':['x','y','x','y','x','y'],
+								   'D':[1,3,2,5,4,1]}
+
+							df = pd.DataFrame(data)
+							df.pivot_table(values='D', index=['A', 'B'], columns=['C'])
+						
+					}
+					
+					# data input and output
+					{
+						pwd
+						#csv
+						df = pd.read_csv('example')
+						df.to_csv('example',index=False)
+						#excel
+						pd.read_excel('Excel_Sample.xlsx',sheetname='Sheet1')
+						df.to_excel('Excel_Sample.xlsx',sheet_name='Sheet1')
+						#html
+						df = pd.read_html('http://www.fdic.gov/bank/individual/failed/banklist.html')
+						df[0]
+						#sql is available too:
+							The pandas.io.sql module provides a collection of query wrappers to both facilitate data retrieval and to reduce dependency on DB-specific API. Database abstraction is provided by SQLAlchemy if installed. In addition you will need a driver library for your database. Examples of such drivers are psycopg2 for PostgreSQL or pymysql for MySQL. For SQLite this is included in Python’s standard library by default. You can find an overview of supported drivers for each SQL dialect in the SQLAlchemy docs.						
+							# if your SQL engine is postgresql, best Python library is psycopg2
+							# if your SQL engine is MySQL, best Python library is pymysql
+					}
+					
+					# useful code taken from exercises (on SF Salaries data, Udemy Python course)
+					{
+						df.mean()
+						# equivalent expressions, for locating the record with a maximum in a data frame:
+							sal[sal['TotalPayBenefits']== sal['TotalPayBenefits'].max()] #['EmployeeName']
+							# or
+							sal.loc[sal['TotalPayBenefits'].idxmax()]
+						# an average per year
+							sal.groupby('Year').mean()['BasePay']
+						# value_counts()
+							sal[sal['Year'==2013]]['JobTitle'].value_counts()==1
+					}
+				}
+			}
+
+			# SUMMARY of numerical variables
+			{
+				# count, mean, standard deviation (std), min, quartiles and max
+				df= train.describe()
+				print (df)
+
+				# Print the unique values and their frequency of variable Property_Area
+				df1=train.Property_Area.value_counts()
+				print (df1)
+			}
+
+			# distribution of numerical variables
+			{
+				# Plot histogram for variable LoanAmount
+				train.LoanAmount.hist()
+
+				# Plot a box plot for variable LoanAmount by variable Gender of training data set
+				train.boxplot(column='LoanAmount', by = 'Gender')
+			}
+
+			# distribution of categorical variables
+			{
+				# Approved Loan in absolute numbers
+				loan_approval = train['Loan_Status'].value_counts()['Y']
+
+				# Two-way comparison: Credit History and Loan Status
+				twowaytable = pd.crosstab(train ["Credit_History"], train ["Loan_Status"], margins=True)
+			}
+		}
+
+		# Chapter 4: Data Munging using Pandas
+		{
+			# What is Pandas? What is Data Munging?
+			{
+				""" Pandas: PANel DAta
+					# library for manipulating numerical tables and time series.
+				# Definition: Data Munging / Data Wrangling
+					manually converting or mapping data from "raw" form into a compatibile form for automated tools """
+
+				isnull()
+				fillna()	# imputation, multiple occurrences, categorical or continuous
+				log()
+			}
+
+			# 4.1 NAs / NaN in Pandas
+			{
+				# How many missing values in variable "Self_Employed" ?
+				n_missing_value_Self_Employed = train['Self_Employed'].isnull().sum()
+
+				# Variable Loan amount has missing values or not?
+				LoanAmount_have_missing_value = train['LoanAmount'].isnull().sum() > 0
+			}
+
+			# 4.2 isnull()
+				# Check variables have missing values in test data set
+				number_missing_values_test_data = test.isnull().sum()
+
+			# 4.3 imputing - CONTINUOUS variables
+				# Impute missing value of LoanAmount with 168 for test data set
+				test['LoanAmount'].fillna(168, inplace=True)
+
+			# 4.4 impute - CATEGORICAL variables
+			{
+				# view frequency table
+				train['Gender'].value_counts()
+
+				# Impute missing value of Gender (Male is more frequent category)
+				train['Gender'].fillna('Male',inplace=True)
+
+				# Impute missing value of Credit_History ( 1 is more frequent category)
+				train['Credit_History'].fillna(1,inplace=True)
+			}
+
+			# 4.5 Logarithmic Transform - extreme (outlier) values
+			{
+				train['TotalIncome'] = train['ApplicantIncome'] + train['CoapplicantIncome']
+				# Perform log transformation of TotalIncome to make it closer to normal
+				train['TotalIncome_log'] = np.log(train['TotalIncome'])
+					# CLARIFICATION NOTE:
+					#   np is an instantiation of numpy (an extension that supports large matrices, along with high-level mathematical functions.)
+			}
+			# 4.6 iPython / Jupyter notebook for Data Exploration
+			{
+			}
+		}
+
+		# Chapter 5: Building a Predictive Model
+		{
+			https://campus.datacamp.com/courses/introduction-to-python-machine-learning-with-analytics-vidhya-hackathons/building-a-predictive-model-in-python?ex=1
+
+			# 5.1 First Step of Model Building
+			{
+				""" building predictive / machine learning models in Python (the library SciKitLearn, or sklearn)
+				BEFORE building a predictive model
+					Handle missing values
+					Handle outlier / exponential observations
+					All inputs must be numeric array ( Requirement of scikit learn library) """
+			}
+
+			# 5.2 Label categories of Gender to number
+			{
+				# label all the character variables into a numeric array
+				# first import the module named "LabelEncoder" in the "Scikit Learn" library
+				from sklearn.preprocessing import LabelEncoder
+				# Perform label encoding for variable 'Married'.  old varname: 'Married'.  new varname: 'Married_new'
+				number = LabelEncoder()
+				train['Married_new'] = number.fit_transform(train['Married'].astype(str))
+			}
+
+			# 5.3 Selecting the right algorithm
+			{
+			}
+
+			# 5.4 Have you performed data preprocessing step?
+			"""you need to perform at the minimum:
+				* Missing value imputation
+				* Outlier treatment
+				* Label encoding for character variables
+				* Algorithm selection"""
+
+			# 5.5 Logistic Regression Introduction
+			{
+				# Import linear model of sklearn
+				import sklearn.linear_model
+
+				# Create object of Logistic Regression
+				model=sklearn.linear_model.LogisticRegression()
+			}
+
+			# 5.6 Build your first logistic regression model
+			{
+				# NOTE that 5.6 is building the TRAINING model:
+
+				# Select three predictors Credit_History, Education and Gender
+				predictors =['Credit_History', 'Education', 'Gender']
+				# Converting predictors to numpy array
+				x_train = train_modified[predictors].values		#curious how instead of typing values(), you'd just type '.values'. (supposedly because the column name is called within the brackets [] )
+
+				# Converting outcome to numpy array
+				y_train = train_modified['Loan_Status'].values
+
+				# Model Building
+				model = sklearn.linear_model.LogisticRegression()
+				model.fit(x_train, y_train)
+			}
+
+			# 5.7 Prediction and submission to DataHack
+			{
+				""" whereas 5.6 was building the TRAINING model,
+				5.7 is building the TESTING model
+				which necessarily is using the predict() function """
+
+				# Converting predictors and outcome to numpy array
+				predictors =['Credit_History', 'Education', 'Gender']
+				x_test = test_modified[predictors].values
+
+				# Predict output
+				predicted = model.predict(x_test)
+
+				#Reverse encoding for predicted outcome
+				predicted = number.inverse_transform(predicted)
+
+				#Store it to test dataset
+				test_modified['Loan_Status']=predicted
+
+				#Output file to make submission
+				test_modified.to_csv("Submission1.csv",columns=['Loan_ID','Loan_Status'])
+			}
+
+			# 5.8 Decision Tree Introduction
+			{
+				""" full intro tutorial
+				https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/
+				"""
+				# Import tree module of sklearn
+				import sklearn.tree
+
+				# Create object of DecisionTreeClassifier
+				model = sklearn.tree.DecisionTreeClassifier()
+			}
+
+			# 5.9 Train model and do prediction using Decision Tree
+			{
+				# making a decision tree model
+				import sklearn.tree
+
+				# making TRAINING model
+					# Converting to two numpy arrays (x for predictors, y for outcome)
+					predictors =['Credit_History', 'Education', 'Gender']
+					x_train = train_modified[predictors].values
+					y_train = train_modified['Loan_Status'].values
+
+					# Training Model Building
+						# Create an object of DecisionTreeClassifier
+						model = sklearn.tree.DecisionTreeClassifier
+
+				# making TESTING model
+					x_test = test_modified[predictors].values
+						## <<THIS LINE IS WRONG -- IT IS NOT TO BE DONE>> y_test = test_modified['Loan_Status'].values
+
+				#Predict Output
+				predicted = model.predict(x_test)
+
+				#Reverse encoding for predicted outcome
+				predicted = number.inverse_transform(predicted)
+
+				#Store it to test dataset
+				test_modified['Loan_Status']=predicted
+
+				#Output file to make submission
+				test_modified.to_csv("Submission1.csv",columns=['Loan_ID','Loan_Status'])
+			}
+
+			# 5.10 Random Forest Introduction
+			{
+				{
+					""" It's a versatile method capable of performing BOTH regression and classification.
+					It also undertakes dimensional reduction methods,
+					treats missing values, outlier values and other essential steps of data exploration.
+					It's an ensemble learning method, where a group of weak models combine to form a powerful model """
+				}
+				# Import ensemble module from sklearn
+				import sklearn.ensemble
+
+				# Create object of RandomForestClassifier
+				model=sklearn.ensemble.RandomForestClassifier()
+			}
+
+			# 5.11 Train model and do prediction using Random Forest
+			{
+				#Import module for Random Forest
+				import sklearn.ensemble
+				# Select three predictors Credit_History, Education and Gender
+				predictors =['Credit_History','Education','Gender']
+				# Converting predictors and outcome to numpy array
+				x_train = train_modified[predictors].values
+				y_train = train_modified['Loan_Status'].values
+
+				# Model Building
+				model = sklearn.ensemble.RandomForestClassifier()
+				model.fit(x_train, y_train)
+
+				# Converting predictors and outcome to numpy array
+				x_test = test_modified[predictors].values
+
+				#Predict Output
+				predicted= model.predict(x_test)
+
+				#Reverse encoding for predicted outcome
+				predicted = number.inverse_transform(predicted)
+
+				#Store it to test dataset
+				test_modified['Loan_Status']=predicted
+
+				#Output file to make submission
+				test_modified.to_csv("Submission1.csv",columns=['Loan_ID','Loan_Status'])
+			}
+
+			# 5.12 Selecting important variables for model building
+			{
+				""" Random Forests handle large data sets with higher dimensionality. """
+
+				# I have selected all the features available in the train data set and model it using random forest:
+				predictors=['ApplicantIncome', 'CoapplicantIncome', 'Credit_History','Dependents', 'Education', 'Gender', 'LoanAmount', 'Loan_Amount_Term', 'Married', 'Property_Area', 'Self_Employed', 'TotalIncome','Log_TotalIncome']
+
+				featimp = pd.Series(model.feature_importances_, index=predictors).sort_values(ascending=False)
+
+				print (featimp)
+			}
+		}
+
+		# Chapter 6: Expert advice to improve models
+		{
+
+			# 6.1 How to approach a challenge
+			{
+			"""	The model development cycle BEGINS with hypothesis generation, BEFORE collecting and exploring the data.
+				It ends with model building.
+					Data exploration is the phase of understanding hidden relationships in variables.
+				It is important that you spend time thinking about the given problem and gaining the domain knowledge.
+					This practice usually helps in building better features later on, which are not biased by the data available in the dataset. This is a crucial step which usually improves a model’s accuracy.
+
+			Hypothesis driven analysis:
+				First, list down a comprehensive set of analysis first - basically whatever comes to your mind. Next, you see which out of these variables are readily available or can be collected. Now, this list should give you a set of smaller, specific individual pieces of analysis to work on. For example, instead of understanding all 500 variables first, you check whether the bureau provides number of past defaults or not and use it in your analysis. This saves a lot of time and effort and if you progress on hypothesis in order of your expected importance, you will be able to finish the analysis in fraction of time.
+
+			A Word of Caution: hastily-rushed hypothesis forming
+				If a comprehensive hypothesis generation process is NOT performed, then you might miss out on some information that was present in variables but neglected by a hypothesis.
+				Even if the hypothesis might sound crazy, if you believe it can impact the response variable, then write it down.
+				Even if you miss out on some variables / information, the amount of time saving by being hypothesis driven would be far more.
+
+			Q: What if I am new to domain and can't form hypothesis upfront?
+				You will be surprised with how much you can achieve by being structured and hypothesis driven. If you are completely new to domain, just spend some time understanding it. This is how consultants at McKinsey & BCG work.
+
+				My suggestion is to do as much hypothesis generation as you can upfront in the project and then work on those hypothesis. You will finish it in far shorter period. """
+			}
+
+			# 6.2 Feature Engineering
+			{
+			"""	Feature Engineering breaks into Transformation and Creation
+					Feature Transformation:
+						e.g. Changing the scale (like normalization), log, square root, inverse, Binning of numerical variables
+					Feature Creation:
+						Deriving new variable(s) from existing variables.
+						e.g. Let’s say, we want to predict the number of transactions in a store based on transaction dates. Here transaction dates may not have a direct correlation with the number of transaction, but if we look at the day of a week, it may have a higher correlation. In this case, the information about the day of the week is hidden. We need to extract it to make the model better. """
+			}
+
+			# 6.3 Feature Selection
+			{
+			""" This is a process -- sounds like a diagnostic test.
+			of finding out the best SUBSET of ATTRIBUTES which better explains the relationship of independent variables with target variable.
+
+			You can select the useful features based on various metrics like:
+				DOMAIN KNOWLEDGE: Based on domain experience, we select feature(s) which may have a higher impact on target variable.
+				VISUALIZATION: As the name suggests, it helps to visualize the relationship between variables, which makes your variable selection process easier.
+				STATISTICAL PARAMETERS: We also consider the p-values, information values, and other statistical metrics to select right features.
+
+			For example, a variable importance table is an output component of a random forest classifier.
+			A variable importance table shows the importance of each variable with respect to the target variable.  This variable importance table acts as a feature selection tool. """
+			}
+
+			# 6.4 How to select the right value of model parameter?
+			{
+			""" PARAMETER TUNING
+				objective: to improve the accuracy of the model by finding the optimum value for each parameter.
+				how: you must have a good understanding of each parameter meaning and individual impact on the model in order to tune these parameters.  Then repeat this process with a number of well-performing models.
+
+				example of PARAMETERS in a random forest: maxfeatures, numbertrees, randomstate, oobscore (out-of-bag). """
+				RandomForestClassifier(nestimators=10, criterion='gini', maxdepth=None,minsamplessplit=2, minsamplesleaf=1, minweightfractionleaf=0.0, maxfeatures='auto', maxleafnodes=None,bootstrap=True, oobscore=False, njobs=1, randomstate=None, verbose=0, warmstart=False,class_weight=None)
+			}
+
+			# 6.5 Use ensemble methods to combine output of more than one models?
+			{
+			"""
+
+			. """
+			}
+
+			# 6.6 Cross validtion helps to improve your score on out of sample data set
+
+			# 6.7 iPython / Jupyter notebook for Predictive Modeling
+
+		}
+
+	}
+
+}
+
+{
+	# C:\Python27\Python.exe C:\wd\Python\linalg.py
+
+	import numpy as np
+	a = np.zeros((2,2))   # Create an array of all zeros
+	print(a)              # Prints "[[ 0.  0.]
+						  #          [ 0.  0.]]"
+
+	b = np.ones((1,2))    # Create an array of all ones
+	print(b)              # Prints "[[ 1.  1.]]"
+
+	c = np.full((2,2), 7)  # Create a constant array
+	print(c)               # Prints "[[ 7.  7.]
+						   #          [ 7.  7.]]"
+
+	d = np.eye(2)         # Create a 2x2 identity matrix
+	print(d)              # Prints "[[ 1.  0.]
+						  #          [ 0.  1.]]"
+
+	np.arange(0,11,2)
+	np.linspace(0,10,3)
+
+	# random numbers
+		np.random.rand(2,3)
+		np.random.randn(2,3)
+		np.random.randint(1,7,3)
+
+	arr = np.arange(25)
+	arr.reshape(5,5)
+
+	ranarr = np.random.randint(0,50,10)
+		ranarr.min()
+		ranarr.argmin()
+		ranarr.max()
+		ranarr.argmax()
+
+	arr.shape
+
+	arr.dtype
+
+	#To get a copy of an array, we use an explicit method
+		arr_copy = arr.copy()
+		# otherwise creating a slice of an array still points to the same memory addresses of original array
+
+	# array operators
+		arr = np.arange(0,10)
+		np.sqrt(arr)
+		np.exp(arr)
+		arr.max()
+		np.max(arr)  #same as prev line
+		np.sin(arr)
+		np.log(arr)
+
+	# MATRIX MULTIPLICATION!
+	a = [[1, 0], [0, 1]]
+	b = [[4, 1], [2, 2]]
+	np.matmul(a, b)
+
+	aa = np.ones((2,2))
+	ii = np.eye(2)
+	np.matmul(aa,ii)
+
+	from scipy.linalg import inv as my_inv
+
+	x = np.array([2,-1,1])
+	w = np.array([1,-.5,0])
+	np.dot(x,w) # = 2.5
+	# b = 0.5
+	# theta = -.5
+	# target t=1
+	# z = 3
+	# loss^2 = .5*(y-t)^2
+
+	'''
+	logistic sigmoid: 1/(1+exp(-3))
+	'''
+
+	# Neural Networks, Lecture 2, Q#6, multiple answer choices:
+	# matrix form:
+		A = Matrix([[1,1,1,1], [1,0,0,0], [0,1,0,0], [0,0,1,1]])
+		B = Matrix([[1,1,0,1], [1,0,0,0], [0,1,1,0], [0,0,1,1]])
+		C = Matrix([[1,1,1,1], [1,0,1,0], [0,1,0,0], [0,0,0,1]])
+		D = Matrix([[1,1,1,1], [1,0,0,0], [0,1,0,0], [0,0,0,1]])
+
+		from scipy.linalg import det
+		''' WRONG:
+			from scipy.linalg import rref
+			from sympy import rref
+		'''
+		from sympy import *
+		import sympy as sp
+		A.rref()
+		det(A)
+
+	# list form
+		list_A = [[1,1,1,1], [1,0,0,0], [0,1,0,0], [0,0,1,1]]
+		np.linalg.det(list_A)
+
+}
+
+# udemy: python for data science and machine learning bootcamp
+# this course covers: NumPy, SciPy, Pandas, Seaborn, SciKit-Learn, MatplotLib, Plotly, PySpark
+
+jupyter notebook
+
+# what is a kernel?  A kernel is just an instance that's running, e.g. an instance of Python.
+''' a tuple uses () instead of square brackets [], which are used by lists
+	but the key difference: a tuple is immutable. you cannot mutate an element of a tuple.
+	Within a list, you CAN mutate an element -- lists are mutable.
+'''
+	{
+	# from crash course	intro section
+		# sets: duplicates are not kept.
+		{1,1,1,2,2,2,3,3,3}
+		# There's a set function, to return the unique elements:
+		set([1,1,2,2,2,3,3,3,4,4])
+			#adding to a set:
+			set1 = {1,2,3}
+			set1.add(5)
+			# This added a new element containing 5 to the set
+
+		# range
+			range(5)
+
+			for x in range(0,5):
+				print(x)
+
+			list(range(10))
+
+			# list comprehension (a very common operation in Python)
+				# the equivalent code, in its lengthy form
+					x = [1,2,3,4]
+					out = []
+					for num in x:
+						out.append(num**2)
+					print(out)
+
+				# list comprehension: shortened code
+					x = [1,2,3,4]
+					out = [item**2 for item in x]
+
+		# function
+			def my_func(param1='default'):
+				print(param1)
+
+			def square(num):
+				"""
+				This function returns the square.
+				"""
+				return num**2
+
+			# To read about the function: type its name, then click shift+tab.
+
+		# map function
+			# map() is used on functions
+				# simple sample function
+				def times2(var):
+					return(var*2)
+				seq = [1,2,3]
+				list(map(times2, seq))
+
+		# lambda expressions, aka anonymous functions
+			# easier alternative to map()
+			# reason: we may not want to define an entire function (like times2() above), since instead of a function, we're often using one-time code lines.
+
+			# rewriting times2() into a lambda expression
+				lambda var:var*2
+					# it's more compact than this:  def times2(var): return(var*2)
+				list(map(lambda num: num*3, [1,2,3,4,5]))
+
+		# filter function
+			list(filter(lambda num: num%2 == 0, [1,2,3,4,5]))
+
+		# methods: useful ones
+			# best string methods
+				str1 = 'hello my name is Sam'
+				str1.lower()
+				str1.upper()
+				str2 = 'Hiking POV along the #palipuka ridge. Not the best idea to keep looking down.  #hawaii #hiking #palipuka'
+				str2.split('#')
+
+			# best dictionary methods
+				dict1 = {'k1': 1,'k2': 2}
+				dict1.keys()
+				dict1.items()
+				dict1.values()
+
+			# best list methods
+				l1 = [1,2,3,4,5]
+				l1.pop()
+					l1
+					x = l1.pop()
+					x
+					l1
+					first = l1.pop(0)
+					l1
+
+				l1.append('new')
+				'x' in [1,2,3]
+				'x' in ['x','y','z']
+
+			# best tuple methods
+				# tuple unpacking
+					x = [(1,2),(3,4),(5,6)]
+					for item in x: print(item)
+					for a,b in x:
+						print(a)
+						print(b)
+	}
+
+	# Numpy
+	{
+		# built-in methods
+
+	}
+
+# matplotlib in Udemy
+{
+	# matplotlib concepts
+	
+		# only for jupyter notebooks
+			%matplotlib inline
+		# if you are using another editor, you'll use: ...
+			plt.show() 
+			# ... at the end of all your plotting commands to have the figure pop up in another window.
+		
+		# (sub-optimal method) function-oriented approach
+			plt.plot(x, y, 'r') # 'r' is the color red
+			plt.xlabel('X Axis Title Here')
+			plt.ylabel('Y Axis Title Here')
+			plt.title('String Title Here')
+			# plt.subplot(nrows, ncols, plot_number)
+			plt.subplot(1,2,1)
+			plt.plot(x, y, 'r--') # More on color options later
+			plt.subplot(1,2,2)
+			plt.plot(y, x, 'g*-');		
+		
+		# OBJECT-ORIENTED METHOD: 
+		  # BEST way to use matplotlib: 
+		  # We'll instantiate figure objects, and then we'll call methods or attributes from that object
+			fig = plt.figure()
+			axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+				# parameters, in order: left, bottom, width, height
+			axes.plot(x,y)
+			axes.set_xlabel('X Label')
+			axes.set_ylabel('Y Label')
+			axes.set_title('Set Title')
+			
+			# Creates blank canvas
+			fig = plt.figure()
+
+			axes1 = fig.add_axes([0.1, 0.1, 0.8, 0.8]) # main axes
+			axes2 = fig.add_axes([0.2, 0.5, 0.4, 0.3]) # inset axes
+
+			# Larger Figure Axes 1
+			axes1.plot(x, y, 'b')
+			axes1.set_xlabel('X_label_axes2')
+			axes1.set_ylabel('Y_label_axes2')
+			axes1.set_title('Axes 2 Title')
+
+			# Insert Figure Axes 2
+			axes2.plot(y, x, 'r')
+			axes2.set_xlabel('X_label_axes2')
+			axes2.set_ylabel('Y_label_axes2')
+			axes2.set_title('Axes 2 Title');			
+			
+	# SUBPLOTS (in object-oriented matplotlib approach)
+		# Use similar to plt.figure() except use tuple unpacking to grab fig and axes
+		fig, axes = plt.subplots()
+
+		# Now use the axes object to add stuff to plot
+		axes.plot(x, y, 'r')
+		axes.set_xlabel('x')
+		axes.set_ylabel('y')
+		axes.set_title('title');
+
+		# specify the number of rows and columns
+			# Empty canvas of 1 by 2 subplots
+			fig, axes = plt.subplots(nrows=1, ncols=2)		
+			
+		# Axes is an array of axes to plot on
+		axes
+
+		for ax in axes:
+			ax.plot(x, y, 'b')
+			ax.set_xlabel('x')
+			ax.set_ylabel('y')
+			ax.set_title('title')
+
+		# Display the figure object    
+		fig
+
+		# A common issue with matplolib is overlapping subplots or figures. We can use fig.tight_layout() or plt.tight_layout() method, which automatically adjusts the positions of the axes on the figure canvas so that there is no overlapping content:
+			fig, axes = plt.subplots(nrows=3, ncols=3)
+			# option 1
+				plt.tight_layout()
+				# [ option 2 - doesn't quite work, does it?  		​fig.tight_layout() ]
+				
+			fig, axes = plt.subplots(nrows=1, ncols=2)
+				# axes is an array, so i can iterate throught it
+				for ax in axes:
+					ax.plot(x, y, 'g')
+					ax.set_xlabel('x')
+					ax.set_ylabel('y')
+					ax.set_title('title')
+
+				axes[0].plot(x,y)
+				axes[0].set_title('Plot 1')
+				axes[1].plot(y,x)
+				axes[1].set_title('Plot 2')
+			fig    
+			plt.tight_layout()
+			
+		# Figure size, aspect ratio and DPI
+			fig = plt.figure(figsize=(8,4), dpi=100)
+						
+			fig, axes = plt.subplots(figsize=(12,3))
+
+			axes.plot(x, y, 'r')
+			axes.set_xlabel('x')
+			axes.set_ylabel('y')
+			axes.set_title('title');			
+		
+		# Saving figures
+			fig.savefig("filename.jpg")
+			fig.savefig("filename.png", dpi=200)
+			
+		# labels and titles
+			ax.set_title("title");
+			ax.set_xlabel("x")
+			ax.set_ylabel("y");
+			
+		# Legends
+			fig = plt.figure()
+
+			ax = fig.add_axes([0,0,1,1])
+
+			ax.plot(x, x**2, label="x**2")
+			ax.plot(x, x**3, label="x**3")
+			ax.legend()
+			ax.legend(loc=2)
+}
+
+# Seaborn in Udemy
+{
+	# google: github seaborn
+		https://github.com/mwaskom/seaborn
+		# useful pages: gallery, API
+		
+	import seaborn as sns
+	%matplotlib inline
+	
+	# load built-in dataset TIPS
+		tips = sns.load_dataset('tips')
+		
+	# distribution plots
+		# distribution plot: w/ histogram and kernel density estimation (kde)
+			sns.distplot(tips['total_bill'])
+			sns.distplot(tips['total_bill'], kde=False)
+			sns.distplot(tips['total_bill'], kde=False, bins=30)
+			
+		# joint plot (default = scatter plot): combines 2 distribution plots, e.g. a bivariate plot
+			sns.jointplot(x='total_bill', y='tip', data=tips)
+			sns.jointplot(x='total_bill', y='tip', data=tips, kind='hex')
+			sns.jointplot(x='total_bill', y='tip', data=tips, kind='reg')
+			sns.jointplot(x='total_bill', y='tip', data=tips, kind='kde')
+			
+		# pairplot: to quickly visualize the data
+			sns.pairplot(tips)
+			sns.pairplot(tips, hue='sex') # for categorical variables, e.g. 'sex'
+			sns.pairplot(tips, hue='sex', palette='coolwarm')
+			
+		# rugplot: simply prints 1-dimensional dashmark 
+			# The rugplot won't be used often. It builds the logic for a kernel density estimation
+				# A kernel density estimation is an additive sum of normal distributions, each of which is centered on a rugplot dashmark
+			sns.rugplot(tips['total_bill'])
+			
+		# kde plot (it's like a distribution plot, but w/o the histogram)
+			sns.kdeplot(tips['total_bill'])
+			
+	# categorical plots
+		sns.barplot(x='sex', y='total_bill', data=tips)
+		sns.barplot(x='sex', y='total_bill', data=tips, estimator=np.std) # req'd: import numpy as np
+		
+		sns.countplot(x='sex', data=tips)
+		
+		sns.boxplot(x='day', y='total_bill', data=tips)
+		sns.boxplot(x='day', y='total_bill', data=tips, hue='smoker')
+		
+		# violinplot shows MORE info than a boxplot: distributions
+			sns.violinplot(x='day', y='total_bill', data=tips)
+			sns.violinplot(x='day', y='total_bill', data=tips, hue='sex')
+			sns.violinplot(x='day', y='total_bill', data=tips, hue='sex', split=True)
+		
+		# strip plot: a vertical scatterplot
+			sns.stripplot(x='day', y='total_bill', data=tips)
+			sns.stripplot(x='day', y='total_bill', data=tips, jitter=True)
+			sns.stripplot(x='day', y='total_bill', data=tips, jitter=True, hue='sex')
+			sns.stripplot(x='day', y='total_bill', data=tips, jitter=True, hue='sex', split=True)
+			
+			# swarm plot: combination of strip plot + violin plot
+				# most ppl don't know these; also they're not recommended for very large data sets
+				# more for exploratory analysis, not for presentation
+			sns.swarmplot(x='day', y='total_bill', data=tips)
+				# to superimpose this can be helpful
+				sns.violinplot(x='day', y='total_bill', data=tips, color='black')
+		
+		# factor plot: the most GENERAL form of all these plots
+			# to make a bar plot:
+				sns.factorplot(x='day', y='total_bill', data=tips, kind='bar')
+
+	# Matrix plots
+		# mostly heat maps
+		flights = sns.load_dataset('flights')
+		tips = sns.load_dataset('tips')
+		# In order for a heatmap to work properly, your data should already be in a matrix form, the sns.heatmap function basically just colors it in for you.
+		sns.heatmap(tips.corr())
+		sns.heatmap(tips.corr(),cmap='coolwarm',annot=True)
+		flights.pivot_table(values='passengers',index='month',columns='year')
+		pvflights = flights.pivot_table(values='passengers',index='month',columns='year')
+		sns.heatmap(pvflights)
+		sns.heatmap(pvflights,cmap='magma',linecolor='white',linewidths=1)
+			
+		# Clustermap
+			sns.clustermap(pvflights)
+			# Notice now how the years and months are no longer in order, instead they are grouped by similarity in value (passenger count). That means we can begin to infer things from this plot, such as August and July being similar (makes sense, since they are both summer travel months)
+			# More options to get the information a little clearer like normalization
+			sns.clustermap(pvflights,cmap='coolwarm',standard_scale=1)
+			
+	# Regression plots
+		sns.lmplot(x='total_bill',y='tip',data=tips)
+		sns.lmplot(x='total_bill',y='tip',data=tips,hue='sex')
+		sns.lmplot(x='total_bill',y='tip',data=tips,hue='sex',palette='coolwarm')
+		
+		# Markers
+			# http://matplotlib.org/api/markers_api.html
+			sns.lmplot(x='total_bill',y='tip',data=tips,hue='sex',palette='coolwarm', markers=['o','v'],scatter_kws={'s':100})
+		
+		# side-by-side plots (Udemy calls it a grid)
+			sns.lmplot(x='total_bill',y='tip',data=tips,col='sex')
+			sns.lmplot(x="total_bill", y="tip", row="sex", col="time",data=tips)
+			sns.lmplot(x='total_bill',y='tip',data=tips,col='day',hue='sex',palette='coolwarm')
+			
+		# Aspect and size
+			sns.lmplot(x='total_bill',y='tip',data=tips,col='day',hue='sex',palette='coolwarm', aspect=0.6,size=8)
+			
+	# Grids
+		iris = sns.load_dataset('iris')
+		
+		# Just the empty grid
+			sns.PairGrid(iris)
+		# Then you map to the grid
+			g = sns.PairGrid(iris)
+			g.map(plt.scatter)
+			
+		# Map to upper,lower, and diagonal
+			g = sns.PairGrid(iris)
+			g.map_diag(plt.hist)
+			g.map_upper(plt.scatter)
+			g.map_lower(sns.kdeplot)			
+			
+		# pairplot -- pairplot is a simpler version of PairGrid (you'll use quite often)
+			sns.pairplot(iris)
+			sns.pairplot(iris,hue='species',palette='rainbow')
+			
+		# facet grid -- FacetGrid is the general way to create grids of plots based off of a feature:
+			tips = sns.load_dataset('tips')
+			
+		# Just the empty grid
+			g = sns.FacetGrid(tips, col="time", row="smoker")
+						
+			g = sns.FacetGrid(tips, col="time",  row="smoker")
+			g = g.map(plt.hist, "total_bill")
+			
+			g = sns.FacetGrid(tips, col="time",  row="smoker",hue='sex')
+			# Notice how the arguments come after plt.scatter call
+			g = g.map(plt.scatter, "total_bill", "tip").add_legend()
+			
+		# JointGrid -- JointGrid is the general version for jointplot() type grids, for a quick example:	
+			g = sns.JointGrid(x="total_bill", y="tip", data=tips)
+			
+			g = sns.JointGrid(x="total_bill", y="tip", data=tips)
+			g = g.plot(sns.regplot, sns.distplot)
+			
+	# style and color
+	
+		# Google "matplotlib colormap"
+			https://matplotlib.org/examples/color/colormaps_reference.html
+			# Note that any colormap listed here can be reversed by appending "_r" (e.g., "pink_r")
+				
+		'''
+		import seaborn as sns
+		import matplotlib.pyplot as plt
+		%matplotlib inline
+		tips = sns.load_dataset('tips')
+		'''
+		# styles
+			sns.countplot(x='sex',data=tips)
+			
+			sns.set_style('white')
+			sns.countplot(x='sex',data=tips)			
+			
+			sns.set_style('ticks')
+			sns.countplot(x='sex',data=tips,palette='deep')
+			
+		# spine removal (referring to the 4 edges of a plot (the bottom being the x-axis and the left being the y-axis)
+			sns.countplot(x='sex',data=tips)
+			sns.despine()
+			
+			sns.countplot(x='sex',data=tips)
+			sns.despine(left=True)
+		
+		# size and aspect
+			'''
+			You can use matplotlib's **plt.figure(figsize=(width,height) ** to change the size of most seaborn plots.
+			You can control the size and aspect ratio of most seaborn grid plots by passing in parameters: size, and aspect. For example:
+			'''
+			# Non Grid Plot
+				plt.figure(figsize=(12,3))
+				sns.countplot(x='sex',data=tips)
+			
+			# Grid Type Plot
+				sns.lmplot(x='total_bill',y='tip',size=2,aspect=4,data=tips)
+
+		# Scale and Context
+			# The set_context() allows you to override default parameters:
+				# e.g., fontsize can be changed
+					sns.set_context('poster',font_scale=4)
+				sns.countplot(x='sex',data=tips,palette='coolwarm')
+			
+			# Check out the documentation page for more info on these topics:
+				https://stanford.edu/~mwaskom/software/seaborn/tutorial/aesthetics.html
+
+}
