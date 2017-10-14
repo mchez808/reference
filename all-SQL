@@ -1,0 +1,1011 @@
+--- SQL
+--- in cloud9: mysql-ctl cli
+
+/* See Gmail "Our top 10 favorite new SQL features"
+	https://meta.data.world/top-10-sql-features-a39e7b983a3c
+
+	9) Subqueries
+	4) Statistical Correlation
+	2) Keyboard Shortcuts and Reformatting
+	1) API Access
+	6) Filtered Aggregations
+	8) Project Implicit Federation
+	3) Date Functions (see below in this file: DATE_PART, DATE_TRUNC)
+I've already learned (good freakin job Mark!): 
+	10) WITH Clause
+	7) ROLLUP
+	5) CASE Statements
+	3) Date Functions (DATE_ADD, DATE_SUB, DATE_PART, DATE_FORMAT, and DATEDIFF)
+*/
+
+-- the WITH clause can help break up complex queries
+	WITH frames AS 
+		(SELECT * FROM [dbo].Product
+			WHERE ProductName like '%Frame%')
+	select * 
+	from frames
+	where Color = 'Red';
+
+
+--- Sec 4
+	/* DON'T FORGET COMMAS BETWEEN VALUES FOR INSERTION!!!
+	*/
+		INSERT INTO table_name 
+					(column_name, column_name) 
+		VALUES      (value, value), 
+					(value, value), 
+					(value, value);
+
+	--- DEFAULT
+	CREATE TABLE cats4
+	  (
+		name VARCHAR(20) NOT NULL DEFAULT ‘unnamed’,
+		age INT NOT NULL DEFAULT 99
+	  );
+
+	CREATE TABLE unique_cats2 (
+		cat_id INT NOT NULL AUTO_INCREMENT,
+		name VARCHAR(100),
+		age INT,
+		PRIMARY KEY (cat_id)
+	);
+	/* MY NOTES on PRIMARY KEY: 
+		1. the word PRIMARY KEY can appear inline while defining ID, 
+			OR separately as shown above ("PRIMARY KEY (cat_id)")
+		2. AUTO_INCREMENT can appear before NOT NULL; it's commutative
+	*/
+--- end of Sec 4
+
+	
+	
+	
+	
+--- Sec 5: Create Read Update Delete
+	/*
+		CRUD:
+			CREATE
+			READ
+			UPDATE
+			DELETE
+	*/
+
+	--- CREATE
+	CREATE TABLE cats
+	(
+		cat_id INT NOT NULL AUTO_INCREMENT,
+		name   VARCHAR(100), 
+		breed  VARCHAR(100), 
+		age    INT, 
+		PRIMARY KEY (cat_id)
+	);
+
+	INSERT INTO cats(name, breed, age) 
+	VALUES ('Ringo', 'Tabby', 4),
+		   ('Cindy', 'Maine Coon', 10),
+		   ('Dumbledore', 'Maine Coon', 11),
+		   ('Egg', 'Persian', 4),
+		   ('Misty', 'Tabby', 13),
+		   ('George Michael', 'Ragdoll', 9),
+		   ('Jackson', 'Sphynx', 7);
+
+	--- READ	   
+	SELECT name AS same_name_cats, cat_id AS id, age FROM cats
+	WHERE cat_id=age;
+
+	--- UPDATE
+	UPDATE cats SET breed='Shorthair' WHERE breed='Tabby';
+
+	UPDATE cats SET age=14 WHERE name='Misty';
+
+	UPDATE cats SET name='Jack' WHERE name='Jackson';
+
+	UPDATE cats SET breed='British shorthair' WHERE name='Ringo';
+
+	UPDATE cats SET age=12 WHERE breed='Maine Coon';
+
+	--- DELETE 
+
+	DELETE FROM cats WHERE age=4;
+
+	DELETE FROM cats WHERE cat_id=age;
+
+	DELETE FROM cats;
+--- end of Sec 5: CRUD (create read update delete)
+
+
+	
+	
+	
+	
+--- Sec 6 CRUD challenge 	Spring Cleaning 	*/
+
+	CREATE DATABASE shirts_db;
+	USE shirts_db;
+
+	CREATE TABLE shirts
+	  (
+		 shirt_id INT NOT NULL AUTO_INCREMENT,
+		 article  VARCHAR(100),
+		 color   VARCHAR(100),
+		 shirt_size  VARCHAR(100),
+		 last_worn  INT,
+		 PRIMARY KEY (shirt_id)
+	  );
+
+	INSERT INTO shirts(article, color, shirt_size, last_worn)
+	VALUES 
+		('t-shirt', 'white', 'S', 10),
+		('t-shirt', 'green', 'S', 200),
+		('polo shirt', 'black', 'M', 10),
+		('tank top', 'blue', 'S', 50),
+		('t-shirt', 'pink', 'S', 0),
+		('polo shirt', 'red', 'M', 5),
+		('tank top', 'white', 'S', 200),
+		('tank top', 'blue', 'M', 15);
+
+	INSERT INTO shirts(article, color, shirt_size, last_worn)
+	VALUES ('polo shirt', 'purple', 'M', 50);
+
+	SELECT article, color from shirts;
+
+	SELECT article, color, shirt_size, last_worn FROM shirts WHERE shirt_size='M';
+
+	UPDATE shirts SET shirt_size='L' WHERE article='polo shirt';
+		SELECT article, shirt_size FROM shirts WHERE article='polo shirt';
+		
+	SELECT article, color, shirt_size, last_worn FROM shirts WHERE last_worn=15;
+	UPDATE shirts SET last_worn=0 WHERE last_worn=15;
+
+	SELECT article, color, shirt_size, last_worn FROM shirts WHERE color='white';
+	UPDATE shirts SET shirt_size='XS', color='off white' WHERE color='white';
+
+	SELECT * FROM shirts WHERE last_worn=200;
+	DELETE FROM shirts WHERE last_worn=200;
+
+	DELETE FROM shirts WHERE article='tank top';
+
+	DELETE FROM shirts;
+
+	DROP TABLE shirts;
+--- end of Sec 6: CRUD challenge
+
+	
+	
+	
+	
+	
+--- Sec 7: strings (1 or 2)
+
+	/* 	a GREAT site! 	http://sql-format.com/ */
+
+	SELECT
+	  CONCAT(author_lname, ', ', author_fname)
+	AS full_name
+	FROM books
+	WHERE book_id <= 5;
+
+
+	SELECT author_fname AS first, author_lname AS last,
+	CONCAT(author_lname, ', ', author_fname) AS full
+	FROM books;
+
+	SELECT
+		CONCAT_WS('_', title, author_fname, author_lname)
+	FROM books
+	WHERE book_id <= 5;
+
+
+	SUBSTRING
+
+	SELECT SUBSTRING('1234567890', 1, 4) AS test;
+
+	SELECT SUBSTRING(title, 1,10) FROM books;
+
+	SELECT CONCAT(SUBSTRING(title, 1, 30), "...") AS short_title FROM books;
+
+	--- This is equivalent but in blocked formatting
+	SELECT 
+		CONCAT
+		(
+			SUBSTRING(title, 1, 30), 
+			"..."
+		) AS "short title" 
+	FROM books;
+
+	---
+
+	SELECT REPLACE(title, "e", "3")
+	AS REPLACE_example
+	FROM books;
+
+	---
+
+	SELECT REVERSE("go hang a salami; i'm a lasagna hog");
+
+	---
+
+	SELECT
+	  CONCAT(author_lname, " is ", CHAR_LENGTH(author_lname), " letters long.")
+	  AS CHAR_LENGTH_practice
+	FROM books;
+
+	---
+
+	/* ********************************
+	--- Sec 7 exercise - string functions
+	******************************** */ 
+
+
+	--- Q1
+	SELECT REVERSE(UPPER('Why does my cat look at me with such hatred?'));
+
+	/*- Q2
+	I-like-cats
+	*/
+
+	--- Q3
+	SELECT
+	  REPLACE(title, " ", "->")
+	  AS Q3
+	FROM books;
+
+	--- Q4
+	SELECT
+	  author_lname AS forwards,
+	  REVERSE(author_lname) AS backwards
+	FROM books;
+
+	--- Q5
+	SELECT
+	  UPPER(CONCAT(author_fname, " ", author_lname))
+	  AS "full name in caps"
+	FROM books;
+
+	--- Q6
+	SELECT
+	  CONCAT(title, " was released in ", released_year)
+	  AS "blurb"
+	FROM books;
+
+	--- Q7
+	SELECT
+	  title AS "title",
+	  CHAR_LENGTH(title) AS "character count"
+	FROM books;
+
+	--- Q8
+	SELECT
+	  SUBSTRING(title, 1, 10)
+	  AS "short title",
+	  CONCAT(author_lname, author_fname, ", ")
+	  AS name,
+	  CONCAT(stock_quantity, " in stock")
+	  AS "quantity"
+	FROM books;
+--- end of Sec 7: strings (1 of 2)
+	
+	
+	
+	
+	
+	
+--- Sec 8: strings continued (2 or 2)
+
+	/*
+	Part 1: notes
+	Part 2: exercise
+	*/
+
+	/* ****************
+	--- Part 1: notes
+	**************** */
+
+	--- new data
+	INSERT INTO books
+		(title, author_fname, author_lname, released_year, stock_quantity, pages)
+		VALUES ('10% Happier', 'Dan', 'Harris', 2014, 29, 256), 
+			   ('fake_book', 'Freida', 'Harris', 2001, 287, 428),
+			   ('Lincoln In The Bardo', 'George', 'Saunders', 2017, 1000, 367);
+
+	SELECT DISTINCT author_lname, author_fname
+	FROM books;
+
+	SELECT title, released_year
+	FROM books
+	ORDER BY 2 DESC
+	LIMIT 0, 5; --- this shows the first 5 rows
+
+	SELECT title, released_year FROM books ORDER BY 2 DESC
+	LIMIT 1, 5; --- this shows 5 rows starting from the SECOND ROW
+
+	--- LIKE, pt 1
+		SELECT author_fname, title, FROM books
+		WHERE author_fname LIKE "%da%";
+		
+		SELECT author_fname, title FROM books
+		WHERE author_fname LIKE "da%";
+		
+		SELECT author_fname, title FROM books
+		WHERE title LIKE "%the%";
+		
+		SELECT author_fname, title FROM books
+		WHERE title LIKE "the%";
+		
+		SELECT author_fname, title FROM books
+		WHERE author_fname LIKE "dave";
+
+	--- LIKE, pt 2
+		SELECT title, stock_quantity FROM books
+		WHERE stock_quantity LIKE "__";
+
+		SELECT title, stock_quantity FROM books
+		WHERE stock_quantity LIKE "____";
+		
+		SELECT title FROM books
+		WHERE title LIKE "%\%%";
+		--- note that \% is the escape character for the percentage sign (%)
+		
+		SELECT title FROM books
+		WHERE title LIKE "%\_%";
+		--- note that \_ is the escape character for the underscore (_)
+		
+
+	/* ****************
+	--- Part 2: exercise
+	**************** */
+
+	SELECT title
+	FROM books
+	WHERE title LIKE '%stories%';
+
+	SELECT title, pages
+	FROM books
+	ORDER BY pages DESC
+	LIMIT 1;
+
+	SELECT title, 
+	FROM books
+	ORDER BY pages DESC
+	LIMIT 1;
+
+	SELECT 
+		CONCAT(title, " - ", released_year)
+	AS summary
+	FROM books
+	ORDER BY released_year DESC
+	LIMIT 3;
+
+	SELECT title, author_lname
+	FROM books
+	WHERE author_lname LIKE "% %";
+
+	SELECT title, released_year, stock_quantity
+	FROM books
+	ORDER BY stock_quantity ASC
+	LIMIT 3;
+
+	SELECT title, author_lname
+	FROM books
+	ORDER BY author_lname, title;
+
+	SELECT 
+		DISTINCT(
+			UPPER(
+				CONCAT("My favorite author is ", author_fname, " ", author_lname, "!"
+				)
+			)
+		)
+	AS yell
+	FROM books
+	ORDER BY author_lname;
+--- end of Sec 8: strings (2 of 2)
+
+	
+	
+	
+	
+	
+--- Sec 9: AGGREGATE FUNCTIONS
+SELECT COUNT(*) FROM books; --- n=19
+SELECT COUNT(DISTINCT author_fname) FROM books; --- n=12
+    SELECT COUNT(DISTINCT author_lname) FROM books; --- n=11
+    SELECT COUNT(DISTINCT author_fname, author_lname) FROM books; --- n=12
+SELECT COUNT(*) FROM books WHERE title LIKE "%the%";
+    SELECT title FROM books WHERE title LIKE "%the%";
+
+---
+SELECT title, author_lname FROM books
+    GROUP BY author_lname;
+
+-- CONCAT_WS (separator, string1, string2,…)
+	
+-- SELECT COUNT(*), CONCAT(author_fname, " ", author_lname) AS author FROM books
+--     GROUP BY CONCAT(author_fname, " ", author_lname);
+SELECT COUNT(*), author_fname, author_lname FROM books
+    GROUP BY author_fname, author_lname;
+SELECT released_year, COUNT(*) FROM books 
+    GROUP BY released_year;
+SELECT CONCAT('In ', released_year, ' ', COUNT(*), ' book(s) released')
+    AS  'release summary' FROM books 
+    GROUP BY released_year
+    LIMIT 9;
+---
+
+SELECT MIN(released_year), MAX(released_year) FROM books;
+SELECT MIN(pages), MAX(pages) FROM books;
+
+--- TROUBLESHOOTING with aggregate MIN/MAX functions
+    --- What could possibly go wrong with this query below?
+    SELECT MAX(pages), title FROM books;
+    
+    --- As it turns out, it returns bad info:
+    SELECT title, pages AS 'longest book' FROM books ORDER BY pages DESC LIMIT 1;
+    SELECT book_id, title, pages FROM books WHERE title LIKE "%amaz%" OR title LIKE "%sake";
+    
+    --- reason for problem: the MAX() and title queries are executed independently.
+    
+    --- Although a subquery is a solution, it will realistically slow down the processor
+        SELECT * FROM books WHERE pages = (SELECT MAX(pages) FROM books);
+        --- SELECT * FROM books WHERE pages = (634);
+    --- the preceding <<ORDER BY pages DESC LIMIT 1>> query is the fastest solution to process.
+    
+---
+-- Median: 0.5 percentile
+	SELECT ClaimCause
+		,claimpaidamount
+		,(SELECT TOP(1) PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY claimpaidamount DESC) OVER (PARTITION BY claimpaidamount)
+			FROM [Chapter 4 - Insurance].[dbo].[MemberClaims] mc1 WHERE mc1.claimpaidamount = mc.claimpaidamount)
+	FROM [Chapter 4 - Insurance].[dbo].[MemberClaims] mc
+	WHERE claimcause LIKE '%shoulder injury%'
+
+
+SELECT AVG(pages) FROM books;
+SELECT author_fname, author_lname, AVG(stock_quantity) FROM books
+    GROUP BY author_fname, author_lname;
+SELECT released_year, AVG(stock_quantity) FROM books
+    GROUP BY released_year;
+SELECT author_fname, author_lname, AVG(pages) FROM books
+    GROUP BY author_fname, author_lname;
+	
+	-- ROLLUP (from MS SQL Server)
+		-- if MySQL doesn't allow this, note that MS SQL Server does
+	SELECT author_fname, author_lname, AVG(stock_quantity) FROM books
+		GROUP BY author_fname, author_lname WITH ROLLUP;
+	SELECT author_fname, author_lname, AVG(stock_quantity) FROM books
+		GROUP BY ROLLUP(author_fname, author_lname);
+		
+------------------ EXERCISE ------------------
+-- Print the number of books in the database
+SELECT COUNT(*) FROM books;
+
+-- Print out how many books were released in each year
+    SELECT released_year, COUNT(*) FROM books GROUP  BY released_year;
+    -- verify:
+        SELECT DISTINCT released_year FROM books;
+        
+-- Print out the total number of books in stock
+SELECT SUM(stock_quantity) FROM books;
+
+-- Find the average released_year for each author
+SELECT author_fname, author_lname, AVG(released_year) FROM books
+    GROUP BY author_fname, author_lname;
+
+-- Find the full name of the author who wrote the longest book
+SELECT author_fname, author_lname, title FROM books
+    ORDER BY pages DESC LIMIT 1;
+    
+-- Make this happen (see slide)
+SELECT
+    released_year AS year,
+    COUNT(title) AS '# books',
+    AVG(pages) AS 'avg pages'
+FROM books
+GROUP BY released_year;
+--- end of Sec 9: aggregate functions
+
+
+
+
+
+
+--- Sec 10: more on datatypes
+/* CHAR 
+    CHAR has a fixed length
+    CHAR is best for fixed length text, e.g. state abbreviation
+    otherwise USE VARCHAR
+*/
+
+-- NUMBERS
+-- DECIMAL(13, 2)
+CREATE TABLE items(price DECIMAL(5,2));
+INSERT INTO items(price) VALUES(7);
+
+/* DECIMAL vs FLOAT & DOUBLE
+    DECIMAL is a fixed-point type
+        calculations are exact
+    
+    FLOAT & DOUBLE are floating-point types
+        calculations are approximate
+        they store larger numbers using less space
+            this comes at the cost of precision
+            Precision Issues    Memory Needed
+    FLOAT   ~7 digits            4 bytes
+    DOUBLE  ~15 digits           8 bytes
+    
+    advice: use DECIMAL unless you know precision doesn't matter
+*/
+
+/* DATE and TIME
+    DATETIME is used most
+    DATE gets used
+    TIME is rarely used
+*/
+CREATE TABLE people (name VARCHAR(100), birthdate DATE, birthtime TIME, birthdt DATETIME);
+ 
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES('Padma', '1983-11-11', '10:07:35', '1983-11-11 10:07:35');
+ 
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES('Larry', '1943-12-25', '04:10:42', '1943-12-25 04:10:42');
+
+--- 
+CURDATE()
+CURTIME()
+NOW()
+
+--- FORMATTING DATES
+SELECT name, birthdate, DAY(birthdate) FROM people;
+SELECT name, birthdate, DAYNAME(birthdate) FROM people;
+SELECT name, birthdate, DAYOFWEEK(birthdate) FROM people;
+SELECT name, birthdate, DAYOFYEAR(birthdate) FROM people;
+SELECT name, birthtime, DAYOFYEAR(birthtime) FROM people;
+SELECT name, birthdt, DAYOFYEAR(birthdt) FROM people;
+SELECT name, birthdt, MONTH(birthdt) FROM people;
+SELECT name, birthdt, MONTHNAME(birthdt) FROM people;
+SELECT name, birthtime, HOUR(birthtime) FROM people;
+SELECT name, birthtime, MINUTE(birthtime) FROM people;
+
+SELECT CONCAT(
+    MONTHNAME(birthdate), " ", DAYOFMONTH(birthdate), ", ", YEAR(birthdate)
+) FROM people;
+
+/* DATE_PART & DATE_TRUNC
+date_part - Extracts a date part from a date or time, as an integer. Takes two arguments, the original date, and a date part string (one of "year", "month", "day", "hour", "minute", or "second")
+date_trunc - Truncates a date to a given precision. Takes two arguments, the original date, and a date part string (one of "year", "month", "day", "hour", "minute", or "second")
+*/
+
+
+--- DATE_FORMAT
+SELECT CONCAT(name, " was born on a ", DATE_FORMAT(birthdt, '%W, on %M %d at %h:%m')) FROM people;
+
+    -- https://www.w3schools.com/sql/func_mysql_date_format.asp
+
+
+--- DATE MATH
+-- mostly any function in MySQL that starts with DATE will accept datatype DATETIME
+SELECT DATEDIFF(NOW(), birthdt) FROM people WHERE name = 'Larry';
+
+SELECT DATE_ADD(birthdt, INTERVAL 2 MONTH) FROM people;
+-- DATE_SUB also
+
+    /*
+    date + INTERVAL expr unit
+    date - INTERVAL expr unit
+    */
+    SELECT birthdt + INTERVAL 2 MONTH FROM people;
+    
+    SELECT birthdt + INTERVAL 1 MONTH - INTERVAL 2 DAY + INTERVAL 15 HOUR FROM people;
+
+--- TIMESTAMPS
+CREATE TABLE comments (
+    content VARCHAR(100),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO comments (content) VALUES('wha?');
+
+SELECT content, created_at - INTERVAL 1 YEAR FROM comments;
+SELECT CONCAT("comment left at ", HOUR(created_at), "pm") FROM comments;
+
+CREATE TABLE comments2 (
+    content VARCHAR(100),
+    changed_at TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE comments2 (
+    content VARCHAR(100),
+    changed_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW()
+);
+ 
+--- EXERCISES
+CREATE TABLE inventory (
+    item_name VARCHAR(100),
+    price FLOAT,
+    quantity INT
+)
+
+    /* difference between DATETIME and TIMESTAMP
+        DATETIME - a vast range 
+        TIMESTAMP - range is bound from 1970 to 2038  */
+
+SELECT DATE_FORMAT(
+    CURDATE(), '%m/%d/%Y'
+);
+
+SELECT DATE_FORMAT(
+    NOW(), '%M %D at %H:%i'
+);
+
+CREATE TABLE tweets (
+    content VARCHAR(20),
+    username VARCHAR(20),
+    created_at TIMESTAMP 
+)
+
+INSERT INTO tweets (content, username, created_at)
+VALUES(
+    "mainstream media no me gusta!",
+    "realdonaldtrump")
+
+--- CORRECTIONS
+CREATE TABLE inventory (
+    item_name VARCHAR(100),
+    price DECIMAL(8,2),
+    quantity INT
+)
+
+SELECT DATE_FORMAT(NOW()-INTERVAL 7 HOUR, '%M %D at %H:%i %p')
+
+CREATE TABLE tweets (
+    content VARCHAR(140),
+    username VARCHAR(20),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO tweets (content, username)
+VALUES ("hey where are you guys?", "joanofarc"),
+    ("mainstream media no me gusta!", "realdonaldtrump");
+--- end of Sec 10: more on datatypes
+
+
+
+
+
+
+--- Sec 11: Logical Operators
+SELECT title, author_lname,
+CASE
+  WHEN COUNT(*) > 1 THEN CONCAT(COUNT(*), " books")
+  ELSE "1 book"
+END AS COUNT
+FROM books
+GROUP BY author_lname;
+
+
+SELECT title, author_lname, COUNT(*) AS COUNT,
+CASE
+  WHEN COUNT(*) > 1 THEN CONCAT(COUNT(*), " books")
+  ELSE "1 book"
+FROM books
+GROUP BY author_lname
+ORDER BY author_lname;
+
+--- GREATER THAN, LESS THAN, EQUAL TO    
+    'a' > 'b'
+    -- false
+     
+    'A' > 'a'
+    -- false
+     
+    'A' >=  'a'
+    -- true
+    
+--- AND is equivalent to &&
+SELECT title, author_lname, released_year FROM books 
+    WHERE author_lname = 'Eggers'
+    && released_year > 2010;
+
+SELECT title, author_lname, released_year FROM books 
+    WHERE author_lname = 'Eggers'
+    AND released_year > 2010;
+
+--- OR is equivalent to ||
+SELECT title, author_lname, released_year FROM books
+    WHERE author_lname='Eggers' || released_year > 2010;
+
+--- BETWEEN
+SELECT title, released_year FROM books WHERE released_year >= 2004 && released_year <= 2015;
+ 
+SELECT title, released_year FROM books 
+WHERE released_year BETWEEN 2004 AND 2015;
+ 
+SELECT title, released_year FROM books 
+WHERE released_year NOT BETWEEN 2004 AND 2015;
+
+/* NOTE ON CAST():
+    It's best to use CAST() to convert from one datatype to another
+    (in this case, from string to DATETIME).
+    Though MySQL will usually work fine without casting/converting,
+    this is a safety measure just to be cautious. */
+SELECT CAST('2017-05-02' AS DATETIME);
+
+SELECT name, birthdt FROM people WHERE birthdt BETWEEN '1980-01-01' AND '1990-01-01';
+
+SELECT name, birthdt FROM people WHERE birthdt BETWEEN
+    CAST('1980-01-01' AS DATETIME)
+    AND CAST('2000-01-01' AS DATETIME);
+
+--- IN, NOT IN 
+SELECT title, author_lname FROM books
+    WHERE author_lname IN ('Carver', 'Lahiri', 'Smith');
+
+SELECT title, released_year FROM books 
+WHERE released_year IN (2014, 2003);
+
+SELECT title, released_year FROM books
+WHERE released_year NOT IN (2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016);
+
+SELECT title, released_year FROM books
+WHERE released_year % 2 != 0;
+
+--- CASE STATEMENTS
+SELECT title, released_year,
+    CASE
+        WHEN released_year >= 2000 THEN 'Modern Lit'
+        ELSE '20th Century Lit'
+    END AS GENRE
+FROM books;
+
+SELECT title, stock_quantity,
+  CASE
+    WHEN stock_quantity < 50 THEN '*'
+	WHEN stock_quantity > 100 THEN '***'
+	ELSE '**'
+  END AS STOCK
+FROM books;
+
+--- EXERCISES
+
+SELECT author_fname, author_lname,
+  CASE
+    WHEN COUNT(*) = 1 THEN '1 book')
+	ELSE CONCAT(COUNT(*), ' books')
+  END AS COUNT
+FROM books
+GROUP BY author_lname, author_fname;
+
+SELECT title,
+  CASE
+    WHEN title LIKE '%stories%' THEN 'Short Stories'
+	WHEN title = 'Just Kids' || title LIKE '%Heartbreaking%' THEN 'Memoir'
+	ELSE 'Novel'
+  END AS TYPE
+FROM books;
+--- end of Sec 11: logical operators (AND, OR, LIKE) 
+
+
+
+
+
+
+/* Sec 12 - JOIN: ONE TO MANY
+	Lec 195: intro to FOREIGN KEY
+	Lec 196: working with FOREIGN KEY */
+CREATE DATABASE customers_and_orders;
+USE customers_and_orders;
+
+CREATE TABLE customers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(40), 
+  last_name VARCHAR(40), 
+  email VARCHAR(40)  
+);
+
+CREATE TABLE orders
+(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_date DATE,
+  amount DECIMAL(8,2),
+  customer_id INT, 
+  FOREIGN KEY(customer_id) REFERENCES customers(id)
+);
+
+INSERT INTO customers (first_name, last_name, email) 
+VALUES ('Boy', 'George', 'george@gmail.com'),
+       ('George', 'Michael', 'gm@gmail.com'),
+       ('David', 'Bowie', 'david@gmail.com'),
+       ('Blue', 'Steele', 'blue@gmail.com'),
+       ('Bette', 'Davis', 'bette@aol.com');
+       
+INSERT INTO orders (order_date, amount, customer_id)
+VALUES ('2016/02/10', 99.99, 1),
+       ('2017/11/11', 35.50, 1),
+       ('2014/12/12', 800.67, 2),
+       ('2015/01/03', 12.50, 2),
+       ('1999/04/11', 450.25, 5);
+	   
+/* Cross Join (Craziness)
+	aka Cartesian Join.
+	The most basic join, a cross join is basically meaningless.
+	A monstrosity, hardly ever to be used.
+	A cross join is a type of IMPLICIT JOIN. */
+		SELECT id FROM customers WHERE last_name='George';
+		SELECT * FROM orders WHERE customer_id = 1;
+
+		SELECT * FROM orders WHERE customer_id = 
+		(
+		  SELECT id FROM customers
+		  WHERE last_name = 'George'
+		);
+
+		SELECT * FROM orders, customers;
+--- Inner Join
+
+	-- Implicit Inner Join
+	SELECT first_name, last_name, order_date, amount 
+	FROM customers, orders
+	WHERE customers.id = orders.customer_id;
+	
+	-- Explicit Inner Joins
+	SELECT first_name, last_name, order_date, amount 
+	FROM customers
+	JOIN orders ON customers.id = orders.customer_id;
+	
+		-- specifying query: ORDER BY and GROUP BY
+			-- ORDER BY
+			SELECT first_name, last_name, order_date, amount 
+			FROM customers
+			JOIN orders ON customers.id = orders.customer_id
+			ORDER BY amount;
+
+			-- GROUP BY
+			SELECT first_name, last_name, SUM(amount) AS total_spent
+			FROM customers
+			JOIN orders ON customers.id = orders.customer_id
+			GROUP BY customer_id
+			ORDER BY total_spent DESC;
+			
+	-- arbitrary join (which is meaningless)
+		SELECT * FROM customers
+		JOIN orders ON customers.id = orders.id;
+	
+	
+--- Left Join
+SELECT * FROM customers LEFT JOIN orders ON customers.id = orders.customer_id;
+	
+--- Right Join	
+SELECT * FROM customers RIGHT JOIN orders 
+ON customers.id = orders.customer_id;
+
+	-- it's identical to an inner join, because all orders refer to a customer. there's no customer-less transaction taking place.
+	SELECT * FROM customers INNER JOIN orders ON customers.id = orders.customer_id;
+
+
+	SELECT * FROM orders RIGHT JOIN customers ON customers.id = orders.customer_id;
+	SELECT * FROM customers INNER JOIN orders ON customers.id = orders.customer_id;
+	
+SELECT 
+    IFNULL(first_name,'MISSING') AS first, 
+    IFNULL(last_name,'USER') as last, 
+    order_date, 
+    amount, 
+    SUM(amount)
+FROM customers
+RIGHT JOIN orders
+    ON customers.id = orders.customer_id
+GROUP BY first_name, last_name;
+
+-- from Master SQL course on Udemy (Australian guy):
+	
+	-- Demo the full outer join in a select
+		select
+		LastName ,TotalChildren ,city ,CountryRegionName From
+		[dbo].[Customer] cust full outer join
+		[dbo].[Geography] geo ON cust.GeographyKey = geo.GeographyKey order by city
+
+	-- Without the OUTER keyword
+		select
+		LastName ,TotalChildren ,city ,CountryRegionName From
+		[dbo].[Customer] cust full  join
+		[dbo].[Geography] geo ON cust.GeographyKey = geo.GeographyKey order by city
+
+		
+--- end of Sec 12 - JOIN: ONE TO MANY
+
+
+
+
+
+
+--- triggers
+-- ig_db_trigger.sql
+	INSERT INTO follows (follower_id, followee_id)
+	  VALUES (4,4);
+
+	DELIMITER $$
+
+	CREATE TRIGGER trigger_prevent_self_follows
+		BEFORE INSERT ON follows FOR EACH ROW
+		BEGIN
+			IF NEW.follower_id = NEW.followee_id
+			THEN
+				SIGNAL SQLSTATE '45000'
+				SET MESSAGE_TEXT = "You can't follow yourself!";
+			END IF;
+		END;
+	$$
+
+	DELIMITER ;
+
+	/* CREATE TRIGGER trigger_name
+		trigger_time trigger_event ON table_name FOR EACH ROW
+		BEGIN
+		...
+		END;
+	*/
+		
+		-- trigger_time: BEFORE or AFTER
+		
+		-- trigger_event: INSERT UPDATE DELETE
+		
+	/*
+		Managing Triggers: final lecture
+		
+			SHOW TRIGGERS;
+			DROP TRIGGER trigger_name;
+			
+		A word of warning: triggers can make debugging hard!
+			
+	*/    
+
+-- unfollows_trigger.sql
+
+	/*
+		CREATE TABLE unfollows(
+		  follower_id INT NOT NULL,
+		  followee_id INT NOT NULL,
+		  created_at TIMESTAMP DEFAULT NOW(),
+		  FOREIGN KEY(follower_id) REFERENCES users(id),
+		  FOREIGN KEY(followee_id) REFERENCES users(id),
+		  PRIMARY KEY(follower_id, followee_id)
+		);
+	*/
+
+	/* This is an automatic process that captures when a follower unfollows a followee
+		into a table 'unfollows'
+	*/
+	DELIMITER $$
+	CREATE TRIGGER capture_unfollow
+	  AFTER DELETE ON follows FOR EACH ROW
+	  BEGIN
+		INSERT INTO unfollows 
+		SET follower_id = OLD.follower_id,
+			followee_id = OLD.followee_id;
+			-- note that the "INSERT... (col1,col2) VALUES (a, b) also works equally as well.
+	  END$$
+
+	DELIMITER ;
+
+	/* Testing the logger trigger
+		DELETE FROM follows WHERE follower_id=2 && followee_id=1;
+	*/
+
+/* TSQL: Transact-SQL
+	source: http://rakeshgopal.teachable.com/courses/167459/lectures/2519449
+	*/
+	--- note: this functions SHOULD work in SQL server. However, they don't work in my Cloud9. Maybe only in TSQL? idk
+		SELECT GETDATE();
+		SELECT DATEPART(yyyy, GETDATE()) AS YEARNUMBER;
+		SELECT DATEPART(mm, GETDATE());
+		SELECT DATEPART(dd, GETDATE());
+	
+	-- DATEADD
+		SELECT DATEADD(day, 4, GETDATE());
+		SELECT DATEADD(day, 4, '7/4/2015');
+		SELECT DATEADD(month, 4, '7/4/2015');
+		SELECT DATEADD(year, 4, '7/4/2015');
+		
+	--- DATEDIFF
+		SELECT StartDate, EndDate, DATEDIFF(day, StartDate, EndDate) FROM orders;
+		
+		
