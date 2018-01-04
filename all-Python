@@ -1,7 +1,383 @@
+# everything Python
 
-# 9/30/2017: Alan says use Pycharm instead of Spyder (ask him why)
-# common mistakes i make in Python
+# 
+	# MULTIPLE MODES
+		# sets: duplicates are not kept.
+		{1,1,1,2,2,2,3,3,3}
+		# There's a set function, to return the unique elements:
+		set([1,1,2,2,2,3,3,3,4,4])
+			#adding to a set:
+			set1 = {1,2,3}
+			set1.add(5)
+			# This added a new element containing 5 to the set
+
+	# PyAudio
+		https://peolple.csail.mit.edu/hubert/pyaudio/
+
+	(  btw here's a Python cheat sheet 	https://www.pinterest.com/pin/68734900774/  )	
+	https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/edit#
+	
+# refresh:
+	# filter function
+		list(filter(lambda num: num%2 == 0, [1,2,3,4,5]))
+		
+	# best list methods:
+		index()
+		insert()
+
+	# best string methods:
+		join()
+		index()
+		find()
+			rfind()
+			# this doesn't exist:
+				find_all()
+			# that doesn't exist, but this does:
+			>>> import re
+			>>> [m.start() for m in re.finditer('test', 'test test test test')]
+
+
+# in -- SUPER USEFUL COMMAND
+	"a" in "asdf"
+	>>> True
+	"z" in "asdf"
+	>>> False
+	
+	my_list = [1,2,3,2,1]
+	1 in my_list
+	13 in my_list
+	
+	# where() acts as the which() function (which function)	
+		# ex 1:
+		my_list = [1,2,3,2,1]
+		np.where(np.array(mylist) == 2)[0]
+		
+		# ex 2:
+		import pandas as pd
+		myseries = pd.Series([1,2,3,2,1])
+		myseries[myseries == 2].index.tolist()
+		
+	# modules to know
+		import random
+		secret_number = random.choice([1, 2, 3, 4, 5])
+		print(secret_number)
+
+	
+	# objects in Python: overview
+		# everything in Python is an object: Integers, lizsts, dictionaries, booleans... even functions.
+		# data science isn't a very object-oriented discipline, so we won't dive deep into object oriented programming practices.
+		# ATTRIBUTES
+			# By calling object methods, e.g. "a".upper()  >>> "A", we've been accessing object attributes.
+				# A "Method" is in fact just the special name we use for functions that are attached to an object as one of the object's attributes.
+			# Python objects are collections of attributes. Each attribute has a name and a value. Attributes of an object seem a lot like the items of a dictionary.
+			# dir()
+				# We can get a list of the names for each attribute of an object, e.g. print(dir(1))
+			# id(): each object has a unique id
+	
+# Functions, Methods, Packages (basics)
 {
+	# Functions don't belong to a class
+		sorted()
+		print()
+		type()
+		str()
+		int()
+
+	# Methods are functions that belong to each Python object.
+
+	# examples of methods for the class 'list':
+		# these don't change the list
+			list.index()
+			list.count()
+		# these DO change the list
+			list.append()
+			list.remove()
+			list.reverse()
+
+	# Packages
+		# a directory of Python scripts
+		# each script is a module. each module specifies functions, methods, and types
+
+			# pip - package management system.
+			http://pip.readthedocs.io/en/stable/installing/
+			python get-pip.py
+
+	# general import:
+		import math
+	# selective import:
+		from math import pi
+		# then I don't need to name the package explicitly (the math.pi .. just pi is fine)
+
+	# example: abbreviation
+		import math as m
+		r = .45
+		C = 2*m.pi*r
+}	
+	
+	# WHAT I LEARNED ABOUT FOR-LOOPS
+		# From Thinkful:
+			# data = [[2, 5], [3, 4], [8, 7]]
+			# problem: https://www.codewars.com/kata/thinkful-list-and-loop-drills-lists-of-lists/train/python
+			# solution: https://gist.github.com/Grae-Drake/5a7cf7a5b7712f66e4661418ff339b79
+			
+			# IMPORTANT DISTINCTION: 
+				# between looping over range(len(data))
+				# and looping over 'data' <-- in this, each 'sublist' is the sublist itself, 
+					# thus I don't have to deal with integers for loop iterations in this case.
+				for sub_list in data:
+					differences.append(sub_list[0] - sub_list[1])
+
+				for difference in differences:
+					result *= difference
+						
+# VERY VERY HANDY AND USEFUL
+	# map function
+		# map() is used on functions
+			# simple sample function
+			def times2(var):
+				return(var*2)
+			seq = [1,2,3]
+			list(map(times2, seq))
+
+	# lambda expressions, aka anonymous functions
+		# easier alternative to map()
+		# reason: we may not want to define an entire function (like times2() above), since instead of a function, we're often using one-time code lines.
+
+		# rewriting times2() into a lambda expression
+			lambda var:var*2
+				# it's more compact than this:  def times2(var): return(var*2)
+			list(map(lambda num: num*3, [1,2,3,4,5]))		
+		
+# Control Flow: 
+	# Exception Handling: try and except		
+		# Here's another function that expects a number. Let's use a
+		# try / except statement to handle situations where we get
+		# something weird.
+		def modulo_five(num):
+			try:
+				result = num % 5
+				return "{} modulo 5 is {}".format(num, result)
+			except TypeError:
+				return "{} isn't even a number!".format(num)
+	
+		
+# logical assertions
+	# Basics.
+	print(bool(True))
+	print(bool(False))
+
+	# Numbers and strings evaluate to True.
+	print(bool(1))
+	print(bool(2))
+	print(bool(-1))
+	print(bool('Hello'))
+	print(bool('    '))
+
+	# Except for 0 and empty string ''.
+	print(bool(0))
+	print(bool(''))
+
+	# Collections evaluate to True.
+	print(bool([1, 2, 3]))
+	print(bool({'arms': 2, 'legs': 2, 'sword': None}))
+
+	# Except for empty collections.
+	print(bool([]))
+	print(bool({}))
+
+	# `None` acts as you might expect.
+	print(bool(None))
+# logical operators
+	# 'and': note that ORDER MATTERS (of args)
+		# The expression x and y first evaluates x. If 'x' is false, x is returned. 
+		# Otherwise, y is evaluated and y is returned.
+		# Basics.
+		print(False and False)
+		print(False and True)
+		print(True and False)
+
+		# When an `and` expression evaluates to False, what are we
+		# actually returning?
+		print(True and 0)
+		print(None and True)
+		print({} and '')
+
+		# Can you guess what these values will be before you print them?
+		collection = [] and {}
+		number = 1 and (0 and 2)
+	# `or`: expressions only need one side to be `True`, so if the
+		# first expression is true that's what is returned.
+		print(1 or 2)
+		print(1 or False)
+		print('Chocolate' or 'Vanilla')
+
+		# If the first expression evaluates to `False` then an `or`
+		# expression moves to the second expression and returns that,
+		# no matter whether the second value evaluates to `True` or
+		# 'False'.
+		print(False or "Phew!")
+		print(0 or 3)
+		print([] or "Hello")
+
+		print('' or 0)
+		print(0 or [])
+		print(None or {})
+
+		# Can you guess what's going on here before printing?
+		example = False or ("Hmm..." or None)
+		name = '' or {} or []
+		logged_in = name or 'Guido'
+	# 'not'
+		# Here we use `not` to evaulate and return the boolean opposite of
+		# some expressions.
+		print(not True)
+		print(not False)
+		print(not "Hello!")
+		print(not 0)
+		print(not 1)
+# end of logic
+	
+
+# Arithmetic and Numbers
+{
+	# floor division
+	17 // 3.0
+
+	# modulus
+	17 % 3
+
+	# powers
+	5 ** 2
+
+	# In the interactive in-line console: underscore _ receives the last printed expression. try it!
+	3+4
+	_*3
+
+	# Python also supports Decimal and Fraction data types
+
+
+	# numeric data types, division, powers, and _
+	# returns int:
+	8 / 5
+
+	# returns float:
+	8 / 5.0
+
+	+= add and assign
+	-= subtract and assign
+	*= multiply and assign
+	/= "true" divide and assign
+	//= "floor" divide and assign
+	%= modulo and assign
+	**= exponentiate and assign
+	
+	You don't need to know a lot about floating-point errors except that this imprecision makes math a bad idea when you need precise comparisons:
+	>>> 0.2 + 0.4 == 0.6
+	False
+
+	Floats in Python are "double precision" binary floating-point numbers that will represent decimal fractions as precisely as possible with the 52 bits. 
+
+
+	rounding: (from https://docs.python.org/3.5/tutorial/floatingpoint.html)
+
+		math.floor()
+		
+		>>> format(math.pi, '.12g')  # give 12 significant digits
+		'3.14159265359'
+		# NOTE: here, rounding is done, NOT truncating
+
+		>>> format(math.pi, '.2f')   # give 2 digits after the point
+		'3.14'
+		# NOTE: here, rounding is done, NOT truncating
+
+		>>> repr(math.pi)
+		'3.141592653589793'
+}
+
+# data type of 'none': (from Thinkful)
+	# Example:
+		name = none
+		if name is none:
+			name = input("What is your name?")
+			print("Great. Thanks {}".format(name))
+
+Puzzle quiz:
+
+				How do I build the impute_age function?
+
+				--->--->--->--->--->--->	def impute_age(cols):
+				--->--->--->--->--->--->		Age = cols[0]
+				--->--->--->--->--->--->		Pclass = cols[1]
+				--->--->--->--->--->--->		
+				--->--->--->--->--->--->		if pd.isnull(Age):
+				--->--->--->--->--->--->
+				--->--->--->--->--->--->			if Pclass == 1:
+				--->--->--->--->--->--->				return 37
+				--->--->--->--->--->--->
+				--->--->--->--->--->--->			elif Pclass == 2:
+				--->--->--->--->--->--->				return 29
+				--->--->--->--->--->--->
+				--->--->--->--->--->--->			else:
+				--->--->--->--->--->--->				return 24
+				--->--->--->--->--->--->
+				--->--->--->--->--->--->		else:
+				--->--->--->--->--->--->			return Age
+
+				How do I apply that impute_age function?
+				--->--->--->--->--->--->--->--->--->--->--->--->	train['Age'] = train[['Age','Pclass']].apply(impute_age,axis=1)
+		
+
+	histogram: What to do if a distplot is too narrow -- not wide enough to view the distribution?
+		--->--->--->--->--->---> RIGHT: train['Fare'].hist(bins=40, figsize=(12,4))
+		--->--->--->--->--->---> RIGHT: emphasis on the figsize
+
+	grid INSIDE of a chart (e.g. bar chart)
+	sns.set_style('whitegrid')
+
+	How do you drop NAs as you plot?
+		--->--->--->--->--->---> RIGHT: sns.distplot(train['Age'].dropna())
+		
+	How do you plot a heatmap to visually explore where much of the data is missing?
+		--->--->--->--->--->---> RIGHT: sns.heatmap(train.isnull())
+
+# When doing the Udemy Capstone activity
+	# When plotting a countplot and specifying the legend location;
+		sns.countplot(x='Day of Week', data=df, palette='viridis', hue='Reason')
+	# WRONG in this case -- throws error
+		axes = plt.subplots()
+		axes.legend(loc='best')
+		axes.set_xlabel('Day of Week')
+	# CORRECT
+		plt.legend(loc='best')
+		# even better -- from Udemy-Jose's solution:
+			plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+
+
+# 9/30/2017: why should one use Pycharm instead of Spyder?
+# common pandas mistakes i make in Python
+{
+# conditionals
+	{
+		# WRONG: if(4 > 2) 
+		# RIGHT: if 4 > 2:
+		if a > b:
+			print (a-b)
+		else:
+			print (a+b)
+
+		# Python abbreviates elseif to elif
+		if 1 == 2:
+			print('first')
+		elif 3 == 3:
+			print('middle')
+		else:
+			print('Last')
+	}
+	
+	# string
+		# WRONG: lower_case()
+		# RIGHT: lower()
+		
 	# data frames (pandas)
 	{
 		count() vs value_count()
@@ -12,7 +388,7 @@
 		
 		slicing a df:
 		  WRONG: sal[3:4,3:4]
-		  --->--->--->--->--->---> RIGHT: idk yet
+		  --->--->--->--->--->---> RIGHT: see "Selection and Indexing"
 
 		  WRONG: sal['JobTitle','BasePay']
 		  --->--->--->--->--->---> RIGHT: sal[['JobTitle','BasePay']]
@@ -57,32 +433,10 @@
 		--->--->--->--->--->--->--->--->--->--->	WRONG: sal[sal['Year']==2013].value_counts()==1
 		--->--->--->--->--->--->--->--->--->--->	RIGHT: sal[sal['Year']==2013]['JobTitle'].value_counts()==1
 		
-		defining a func w/ conditional inside it:
-		WRONG: 
-			def func1(str):
-				if('x' in str.lower_case())
-					return(True)
-				else
-					return(False)
-		#Now, why is this wrong???
-		RIGHT: 
-		--->--->--->--->	def func1(str):
-		--->--->--->--->		if 'x' in str.lower():
-		--->--->--->--->			return(True)
-		--->--->--->--->		else:
-		--->--->--->--->			return(False)
-		# AHA!  Did you catch 2 errors in the "if" line above?
-		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->---> not lower_case() but lower()
-		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->
-		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->
-		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->---> 
-		--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->--->---> 
 	}	
 }
 
-# everything Python
 
-https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/edit#
 
 # files and directories
 {
@@ -96,47 +450,180 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 
 	# Reading and Writing Files
 	f = open('test.py', "r")
+	
+	# HOW TO RUN A FILE 
+	#	use COMMAND PROMPT
+	#	do NOT use the Python terminal
+	#		C:\Python**\Python.exe C:\wd\Python\test.py
+	#		C:\Python27\Python.exe C:\wd\Python\test.py
+	
 }
 
-# basics of libraries and data structures
 {
-	# array / list
-	{
-		print("Hello World!")
-		squares_list = [0, 1, 4, 9, 16, 25]
-		# Print the first element of squares_list
-		print (squares_list[0])
-			# !-- odd quirk about Python array indices
-
-		# Print the second to fourth elements of squares_list
-		print (squares_list[1:4])
-			# !-- odd quirk about Python array indices
-	}
-
 	# strings
 	{
-		# length
-		str_len = len(str1)
+		# Python strings are immutable.
 
-		str_new = "Machine Learning is awesome!"
-		# Print last eight characters of string str_new (the length of str_new is 28 characters).
-		print (str_new[20:28])
+				# ----------------------------------------------------------------
+				# strings with escapes/escaping, or quotes within quotes
+							# equivalency of single-quotes and double-quotes
+								'doesn\'t'
+								"doesn't"
 
-		str2 = "I am using "
-		str3 = "Python"
+								'"Yes,\" he said.'
+								"\"Yes,\" he said."
+							# print command
+								# ex 1
+									# unintended
+										'"Isn\'t," she said.'
+									# intended
+										print '"Isn\'t," she said.'
+								# ex 2
+									s = 'First line.\nSecond line.'  # \n means newline
+									print s  # with print, \n produces a new line
 
-		# concatenate
-		str4 = str2 + str3
+							# raw string
+								# unintended! :(
+									print 'C:\some\name'  # here \n means newline!
+								# intended! :)
+									print r'C:\some\name'  # note the r before the quote
+				# ----------------------------------------------------------------
 
-		# string1.format()
-			planet = "Earth"
-			diameter = 12742
-			'The diameter of {0} is {1} kilometers'.format(planet, diameter)
-			'The diameter of {} is {} kilometers'.format(planet, diameter)
+		# concatenate strings
+			'text1' 'text2'
+			text = ('12345678901234567890'
+			' 12345678901234567890')
+
+		# MORE on strings:
+		https://docs.python.org/2.7/library/stdtypes.html#string-methods
+	
+		# repeating a string by using the asterisk (times symbol)
+		# Use the `*` operator to repeat.
+		print('Na' * 16 + " Batman!")
+
+		You can also use triple quotes ''' to create big multi-line strings:
+		YES! You can use '''
+		
+		book_of_armaments = '''
+		And the Lord spake, saying, "First shalt thou take out the Holy Pin.
+		Then shalt thou count to three, no more, no less.
+		Three shall be the number thou shalt count, and the number of the counting shall be three.
+		Four shalt thou not count, neither count thou two, excepting that thou then proceed to three.
+		Five is right out.
+		'''
+		
+		Python 3 can store strings like "ねこ"
+	
+		# ascii order
+			ord("a") - 96
+			ord("z") - 96
+			ord(" ")
+			ord("!")
 	}
+		
 
+	# lists
+	{
+		# lists	(Thinkful)
+		{
+			>>> list("Hello")
+			['H', 'e', 'l', 'l', 'o']
+			>>> list(range(10))
+			[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+				
+			# This is how to set an interrupted range.
+			print(list(range(4))+list(range(6,8)))
+			[0, 1, 2, 3, 6, 7]
+		}
+
+		squares = [1, 4, 9, 16, 25]
+		squares[-3:]
+
+		# CONCATENATION!
+		squares + [36, 49, 64, 81, 100]
+
+		# append
+		squares.append(36)
+
+		# list of lists
+			a = ['a', 'b', 'c']
+			n = [1, 2, 3]
+			x = [a, n]
+
+		# note: [list1, list2] results in nested lists, NOT concatenated lists
+	}		
+	
 	# dictionary
 	{
+		# looping on dictionary:
+		# (*NOTE*) looping on dictionary means looping on the KEYS!!
+			alphabet = {"a":"1", "b":"2", "c":"3"}
+			for letter in alphabet: text = text.replace(letter, alphabet[letter]+" ")
+		
+		# Thinkful
+			# best dictionary methods: keys, values, and items.
+				# The .keys() dictionary method will return all the keys in a dictionary.
+				# The .values() method will return all the values in a dictionary.
+				# The .items() method will return all the key: value pairs (or "items") in a dictionary.
+
+				# Create an initial dictionary.
+				greetings = {
+					"english": "hello",
+					"japanese": "こんにちは",
+					"german": "hallo",
+					"hindi": "नमस्ते",
+					"leet": "h3ll0",
+				}
+
+				# dictionary view objects:
+					# creates a list of keys, values, or pairs of keys and values.
+					# lists are DYNAMIC -- auto-updated to current info
+					
+					# `.keys()` method
+					languages = greetings.keys()
+					print(languages)
+
+					# `.values()`
+					translations = greetings.values()
+					print(translations)
+
+					# `.items()`: for key:value pair
+					pairs = greetings.items()
+					print(pairs)
+					
+						# they're not in list form yet, until the below conversion is done:
+							list(translations)
+							list(languages)
+							list(pairs)
+				
+			
+			# boolean operations, for presence of entry in dictionary
+			# What if you just want to know whether a key is in a dictionary at all? For that you can use the in and not in operators.
+			>>> greetings = {
+			...     "english": "hello",
+			...     "japanese": "こんにちは",
+			...     "german": "hallo",
+			...     "hindi": "नमस्ते",
+			...     "leet": "h3ll0",
+			>>> }
+			>>> "english" in greetings
+			True
+			>>> "spanish" in greetings
+			False
+			>>> "pirate" not in greetings
+			True
+
+		
+		# tip: use dict() to save time 
+										# (from typing half the quotation marks) ??????
+		data = dict(type = 'choropleth',
+            locations = ['AZ','CA','NY'],
+            locationmode = 'USA-states',
+            colorscale= 'Portland',
+            text= ['text1','text2','text3'],
+            z=[1.0,2.0,3.0],
+            colorbar = {'title':'Colorbar Title'})
+		
 		dict1 = { 'Age': 16, 'Name': 'Max', 'Sports': 'Cricket'}
 
 		# Update the value of Age to 18
@@ -145,6 +632,9 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 		# Print the value of Age
 		print (dict1['Age'])
 
+		# delete
+		del dict1['Age']
+		
 		# nested dictionaries
 		dict2 = {'k1':[1,2,3]}
 		print(dict2['k1'])	# returns [1,2,3]
@@ -154,26 +644,24 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 		dict_keys = dict1.keys()
 	}
 
-	# conditionals
+	# iterative loops (for loop)
 	{
-		a=3
-		b=4
-		if a > b:
-			print (a-b)
-		else:
-			print (a+b)
+		# From Thinkful:
+			# data = [[2, 5], [3, 4], [8, 7]]
+			# problem: https://www.codewars.com/kata/thinkful-list-and-loop-drills-lists-of-lists/train/python
+			# solution: https://gist.github.com/Grae-Drake/5a7cf7a5b7712f66e4661418ff339b79
+			
+			# IMPORTANT DISTINCTION: 
+				# between looping over range(len(data))
+				# and looping over 'data' <-- in this, each 'sublist' is the sublist itself, 
+					# thus I don't have to deal with integers for loop iterations in this case.
+				for sub_list in data:
+					differences.append(sub_list[0] - sub_list[1])
 
-		# Python abbreviates elseif to elif
-		if 1 == 2:
-			print('first')
-		elif 3 == 3:
-			print('middle')
-		else:
-			print('Last')
-	}
-
-	# iterative loops
-	{
+				for difference in differences:
+					result *= difference
+				
+		
 		# Create a list of first five numbers
 		ls=[]
 		for x in range(5):
@@ -191,107 +679,6 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 	}
 }
 
-# Intro: Numbers, strings and lists
-{
-	# Numbers
-	{
-		# numeric data types, division, powers, and _
-			# returns int:
-			8 / 5
-
-			# returns float:
-			8 / 5.0
-
-			# floor division
-			17 // 3.0
-
-			# modulus
-			17 % 3
-
-			# powers
-			5 ** 2
-
-			# In the interactive mode (in-line console): underscore _ receives the last printed expression. try it!
-			3+4
-			_*3
-
-			# Python also supports Decimal and Fraction
-
-	}
-
-	# strings
-	{
-		# equivalency of single-quotes and double-quotes
-			'doesn\'t'
-			"doesn't"
-
-			'"Yes,\" he said.'
-			"\"Yes,\" he said."
-		# print command
-			# ex 1
-				# unintended
-					'"Isn\'t," she said.'
-				# intended
-					print '"Isn\'t," she said.'
-			# ex 2
-				s = 'First line.\nSecond line.'  # \n means newline
-				print s  # with print, \n produces a new line
-
-			# raw string
-				# unintended! :(
-					print 'C:\some\name'  # here \n means newline!
-				# intended! :)
-					print r'C:\some\name'  # note the r before the quote
-
-		# concatenate strings
-			'text1' 'text2'
-			text = ('12345678901234567890'
-			' 12345678901234567890')
-
-		# index of a string
-			word = 'Python'
-			word[0] + word[3]
-			word[-1]
-			word[0:2]
-
-		# Python strings cannot be changed — they are immutable. Therefore, assigning to an indexed position in the string results in an error.
-			word = 'Hello'
-			word[0] = 'J'  ## returns error
-			'J' + word[1:]
-
-		# string length
-			len(word)
-
-		# MORE on strings:
-		https://docs.python.org/2.7/library/stdtypes.html#string-methods
-	}
-
-	# lists
-	{
-		squares = [1, 4, 9, 16, 25]
-		squares[0]
-		squares[-3:]
-
-		# concatenation
-		squares + [36, 49, 64, 81, 100]
-
-		# append
-		squares.append(36)
-
-		cubes = [1, 4, 9, 16, 25]
-		cubes[1:6] = [2**3, 3**3, 4**3, 5**3, 6**3]
-
-		len(cubes)
-
-		# list of lists
-			a = ['a', 'b', 'c']
-			n = [1, 2, 3]
-			x = [a, n]
-
-	# merging lists: use + for one single-level list
-		# instead of [list1, list2], which results in nested lists
-
-	}
 
 	# First Steps Towards Programming
 	{
@@ -306,74 +693,325 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 		while b < 10:
 			print b,
 			a, b = b, b+a
+			
+		# BREAK: in a while-loop / while loop
+			>>> n = 1
+			>>> while True:
+			>>>     n = n * 2
+			>>>     if n > 32:
+			>>>         break			
 
 	}
-}
 
-# Functions, Methods, Packages (basics)
+# MATPLOTLIB
 {
-	# Functions don't belong to a class
-		sorted()
-		print()
-		type()
-		str()
-		int()
+	# (Note: for simple plots we can take a shortcut using some of the matplotlib functionality that was baked into pandas)
+	# (See PANDAS PLOT)
+	
+	# in THINKFUL, Dec 22, 2017
+		# basic plot
+			plt.plot(df['rand'], color='purple')
+			plt.ylim([-0.1, 1.1])
+			plt.ylabel('Values')
+			plt.title('Random Series')
+			plt.show()
+		# second plot
+			plt.plot(df['rand'], color='purple')
+			plt.plot(df['rand_shift'], color='green')
+		# subplot
+			plt.figure(figsize=(10, 5))
 
-	# Methods are functions that belong to each Python object.
+			# subplot: The first two parameters define the dimensions of the plot, while the third identifies which subplot you're creating.
+			# i.e. subplot(nrows, ncols, specification of the number of the plot that I'll be creating right now)
+			plt.subplot(1, 2, 1)
+			plt.plot(df['rand'], color='purple')
+			plt.ylabel('Values')
+			plt.title('Random Series')
 
-	# examples of methods for the class 'list':
-		# these don't change the list
-			list.index()
-			list.count()
-		# these DO change the list
-			list.append()
-			list.remove()
-			list.reverse()
+			# This 1,2,2 specifies that I'll now be creating plot #2
+			plt.subplot(1, 2, 2)
+			plt.plot(df['rand_shift'], color='green')
+			plt.ylabel('Shifted Values')
+			plt.title('Shifted Series')
+			plt.show()			
+			
+			plt.tight_layout()
 
-	# Packages
-		# a directory of Python scripts
-		# each script is a module. each module specifies functions, methods, and types
+	
+	# matplotlib in Udemy
+		import matplotlib.pyplot as plt
+		# (note: WRONG: import matplotlib as plt)
 
-			# pip - package management system.
-			http://pip.readthedocs.io/en/stable/installing/
-			python get-pip.py
+	# from CSE CA County EV dataset (w/ help from Weihua / William)
+		# Converting 'Purchase Date' into datetime format
+		data['Purchase Date'] = pd.to_datetime(data['Purchase Date'])
 
-	# general import:
-		import math
-	# selective import:
-		from math import pi
-		# then I don't need to name the package explicitly (the math.pi .. just pi is fine)
+		# Create new column for graph display
+		data['month_year'] = data['Purchase Date'].apply(lambda mo_yr: mo_yr.strftime('%Y-%m'))
 
-	# example: pi (3.1415..)
-		import math
-		r = .45
-		C = 2*math.pi*r
 
-	# example: abbreviation
-		import math as m
-		r = .45
-		C = 2*m.pi*r
+		# Plot of BEV and PHEV sales against time
+		BEV_mo_yr = data.loc[data['Vehicle Category']=='BEV', 'month_year']
+		PHEV_mo_yr = data.loc[data['Vehicle Category']=='PHEV', 'month_year']
 
+		fig, axes = plt.subplots(figsize=(18,6))
+
+		BEV_mo_yr.value_counts().sort_index().plot(ax=axes, color='r', linestyle='solid', figsize=(16,6), label='BEV', fontsize=16)
+		PHEV_mo_yr.value_counts().sort_index().plot(ax=axes, color='g', linestyle='solid', figsize=(16,6), label='PHEV', fontsize=16)
+
+		axes.legend(loc='best', fontsize=16)
+		axes.set_ylabel('EV Purchases/Leases', fontsize=16)
+		axes.set_title('Sales of Plug-In Hybrid and Battery EVs', fontsize=18)
+
+		plt.savefig('BEV vs PHEV.png', bbox_inches='tight')
+	
+	# matplotlib concepts
+	
+		# only for jupyter notebooks
+			%matplotlib inline
+		# if you are using another editor, you'll use: ...
+			plt.show() 
+			# ... at the end of all your plotting commands to have the figure pop up in another window.
+		
+		# (SUB-OPTIMAL method) function-oriented approach
+		#	plt.plot(x, y, 'r') # 'r' is the color red
+		#	plt.xlabel('X Axis Title Here')
+		#	plt.ylabel('Y Axis Title Here')
+		#	plt.title('String Title Here')
+		#	# plt.subplot(nrows, ncols, plot_number)
+		#	plt.subplot(1,2,1)
+		#	plt.plot(x, y, 'r--') # More on color options later
+		#	plt.subplot(1,2,2)
+		#	plt.plot(y, x, 'g*-');		
+		
+		# OBJECT-ORIENTED METHOD: 
+		  # BEST way to use matplotlib: 
+		  # We'll instantiate figure objects, and then we'll call methods or attributes from that object
+			fig = plt.figure()
+			axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+				# parameters, in order: left, bottom, width, height
+			axes.plot(x,y)
+			axes.set_xlabel('X Label')
+			axes.set_ylabel('Y Label')
+			axes.set_title('Set Title')
+			
+			# Creates blank canvas
+			fig = plt.figure()
+
+			axes1 = fig.add_axes([0.1, 0.1, 0.8, 0.8]) # main axes
+			axes2 = fig.add_axes([0.2, 0.5, 0.4, 0.3]) # inset axes
+
+			# Larger Figure Axes 1
+			axes1.plot(x, y, 'b')
+			axes1.set_xlabel('X_label_axes2')
+			axes1.set_ylabel('Y_label_axes2')
+			axes1.set_title('Axes 2 Title')
+
+			# Insert Figure Axes 2
+			axes2.plot(y, x, 'r')
+			axes2.set_xlabel('X_label_axes2')
+			axes2.set_ylabel('Y_label_axes2')
+			axes2.set_title('Axes 2 Title');			
+			
+			# When doing the Udemy Capstone activity
+				# creating a line graph, following the creation of the groupby() dataframe (named 'byMonth')
+					# Could be any column
+					byMonth['twp'].plot()				
+
+			
+	# SUBPLOTS (in object-oriented matplotlib approach)
+		# Use similar to plt.figure() except use tuple unpacking to grab fig and axes
+		fig, axes = plt.subplots()
+
+		# Now use the axes object to add stuff to plot
+		axes.plot(x, y, 'r')
+		axes.set_xlabel('x')
+		axes.set_ylabel('y')
+		axes.set_title('title');
+
+		# specify the number of rows and columns
+			# Empty canvas of 1 by 2 subplots
+			fig, axes = plt.subplots(nrows=1, ncols=2)		
+			
+		# Axes is an array of axes to plot on
+		axes
+
+		for ax in axes:
+			ax.plot(x, y, 'b')
+			ax.set_xlabel('x')
+			ax.set_ylabel('y')
+			ax.set_title('title')
+
+		# Display the figure object    
+		fig
+
+		# A common issue with matplolib is overlapping subplots or figures. We can use fig.tight_layout() or plt.tight_layout() method, which automatically adjusts the positions of the axes on the figure canvas so that there is no overlapping content:
+			fig, axes = plt.subplots(nrows=3, ncols=3)
+			# option 1
+				plt.tight_layout()
+				# [ option 2 - doesn't quite work, does it?  		​fig.tight_layout() ]
+				
+			fig, axes = plt.subplots(nrows=1, ncols=2)
+				# axes is an array, so i can iterate throught it
+				for ax in axes:
+					ax.plot(x, y, 'g')
+					ax.set_xlabel('x')
+					ax.set_ylabel('y')
+					ax.set_title('title')
+
+				axes[0].plot(x,y)
+				axes[0].set_title('Plot 1')
+				axes[1].plot(y,x)
+				axes[1].set_title('Plot 2')
+			fig    
+			plt.tight_layout()
+			
+		# Figure size, aspect ratio and DPI
+			fig = plt.figure(figsize=(8,4), dpi=100)
+						
+			fig, axes = plt.subplots(figsize=(12,3))
+
+			axes.plot(x, y, 'r')
+			axes.set_xlabel('x')
+			axes.set_ylabel('y')
+			axes.set_title('title');			
+		
+		# Saving figures
+			fig.savefig("filename.jpg")
+			fig.savefig("filename.png", dpi=200)
+			
+		# labels and titles
+			ax.set_title("title");
+			ax.set_xlabel("x")
+			ax.set_ylabel("y");
+			
+		# Legends
+			fig = plt.figure()
+
+			ax = fig.add_axes([0,0,1,1])
+
+			ax.plot(x, x**2, label="x**2")
+			ax.plot(x, x**3, label="x**3")
+			ax.legend()
+			ax.legend(loc=2)
 }
 
 # Packages for data science
 {
-	''' The following are a list of libraries, you will need for any scientific computations and data analysis:
-	Numpy - to efficiently work with arrays
-	Matplotlib - for data visualization
-	Seaborn - easier to plot graphs in Python
-	Scikit-learn - a one-stop shop for machine learning
-	pandas - data manipulation and analysis. from the term "panel data"
-		easily reads/writes to/from spreadsheets
-		pandas is a data-storing powerhouse
-	scipy - package that contains scientific functions in Python
-		e.g. subpackage linalg
-		example: this imports only the Linear Algebra inverse function '''
-		from scipy.linalg import inv as my_inv
 
-	# Numpy
+	# useful Numpy array methods
 	{
-	'''
+		# NUMPY Dec 22, 2017
+			x = np.arange(8)  # arange: array-range
+			x.reshape(2, 4)
+			
+			a = np.arange(10)**3
+			a[:6:2] = -1000
+				# The THIRD number, 2, means every other (every 2nd) element, i.e. 0,2,4.
+				# setting them to -1000
+			a[::-1]
+				# This displays array BACKWARDS
+			
+		# NUMPY 
+			a.shape
+			x.shape
+			# but it's NOT callable -- meaning you CAN'T type "()" -- CAN'T type a.shape()
+			
+			# This is by ROW
+			for i in x:
+				print(i)
+			# This is by ELEMENT
+			for i in x:
+				print(i)
+			
+		# NUMPY 
+			# These commands don't modify the original array
+				x.ravel()  # returns flattened array
+				x.T # returns transposed
+				
+		# PANDAS (Thinkful)
+			df = pd.DataFrame(x)
+			# naming rows and columns
+				df.columns = ['A','B','C','D']
+				df.index = ['top','bottom']
+				
+			# row names
+				names = ['George', 'John', 'Thomas', 'James', 'Andrew', 'Martin', 'William', 'Zachary', 'Millard', 'Franklin'] 		
+			# empty data frame with named rows
+				purchases = pd.DataFrame(index=names)
+			# Add our columns to the data frame one at a time.
+				purchases['country'] = ['US', 'CAN', 'CAN', 'US', 'CAN', 'US', 'US', 'US', 'CAN', 'US']
+				purchases['ad_views'] = [16, 42, 32, 13, 63, 19, 65, 23, 16, 77]
+				purchases['items_purchased'] = [2, 1, 0, 8, 0, 5, 7, 3, 0, 5]
+				
+			# PANDAS
+				# .loc and .iloc -- NO PARENTHESES -- NOT a method
+					# To select the row for George:
+						purchases.loc['George']
+					# To select the column 'country' we would use:
+						purchases.loc[:,'country']
+					# selecting George and country
+						purchases.loc['George', 'country']
+					 
+					purchases.iloc[1:3, 1]
+				
+				# equivalent expressions:
+					# simple, but slightly less robust
+						purchases[purchases['items_purchased'] > 1]
+					# more robust
+						purchases.loc[lambda df: purchases['items_purchased']>1, :]
+						
+				# groupby() method
+					# create groups and pass in the column name.
+						# group by country
+							purchases.groupby('country') # <-- returns a reference to object, not the object!!
+							purchases.groupby('country').mean()
+							purchases.groupby('country').sum()
+			# PANDAS			
+				# CSV file
+					# CSV is nice but rigid, with built-in tabular structure 
+					df.to_csv('my_data.csv')
+					# www
+						# http://pandas.pydata.org/pandas-docs/stable/io.html#csv-text-files
+				# JSON
+					# JSON and XML are known as semi-structured files 
+						# Unlike raw unstructured text, JSON and XML allow for more customizable and flexible data storage. They do have some structure requirements. This flexibility of semi-structured data often comes at the cost of additional complexity.
+					# JSON is a way to represent a JavaScript object as a string. "Objects" in JavaScript are just collections of key-value pairs.
+					# You can imagine that "JSON" stands for "Python Dictionary Notation" and treat JSON as if it's a string representation of a Python dictionary.
+
+				# create a data frame from a JSON file 
+					df = pd.read_json('filename.json')
+					# The more common use case is to send JSON data over the web (rather than local file). For that we'd call to_json() without a path argument to create a JSON string that we'd later process and send:
+						serialized_purchases = df.to_json()						
+						# You should generally prefer CSV for outputting your data frames into files, but you can use .to_json to output a data frame as a JSON file:
+							df.to_json('my_data.json')
+				# XML
+					# the XML format is older, clunkier and not as common as JSON. However it's similar/familiar to HTML syntax
+						# NO PANDAS METHOD EXISTS FOR READING IN XML
+						# check out lxml package online
+							import xml.etree.ElementTree as ET
+							# Load and parse the XML file into a tree.
+							tree = ET.parse('purchases.xml')
+							# Find the root of the tree. This is the node of the tree where we'll start our iteration.
+							root = tree.getroot()
+
+				# Python open()
+					# Let's open the poem.txt file, create a file object, and print out the file text line by line.
+					with open('poem.txt') as poem_file:
+						text = poem_file.readlines()
+						print("This file is {} lines long".format(len(text)))
+						for line in text:
+							print(line)
+					# It's super easy to forget to manually close files, which can keep resources tied up and cause unexpected trouble. Luckily, Python gives us the with statement you see used above so we don't have to remember to use .close(), because files opened in a with statement will automatically be closed once the with statement exits. Using with when manually opening files is best practice and you should plan on doing that each time you use open() unless you have a compelling reason not to.
+					
+			# PANDAS PLOT
+				# for simple plots we can take a shortcut using some of the matplotlib functionality that was baked into pandas
+				df.plot(kind='scatter', x='counts_sq',y= 'counts_sqrt')
+				df.plot(kind='line')
+				plt.show()
+
+
+		'''
 		a GRRRREAT TUTORIAL
 			http://cs231n.github.io/python-numpy-tutorial/#numpy-arrays
 		arrays allow for VECTOR OPERATIONS, to be performed over entire array, while with lists we cannot.
@@ -381,8 +1019,8 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 		'''
 		
 		# example of looping to generate list
+			# np.random.normal(center, std-dev, # of points)
 			data = [np.random.normal(0, std, 100) for std in range(1, 4)]
-			# true length = 3, ONLY 3 elements in list, NOT 4!
 
 		# note: bmi is an array
 		bmi > 23 #returns array of boolean elements
@@ -429,31 +1067,55 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 				}
 		}
 
+		# statistics
+			import statistics
+			statistics.mode(x)  # returns mode
+			var = sum((x - mean) ** 2) / (n - 1)  # variance
+				# sample variance: dividing by n - 1.
+				# population variance: dividing by n.
+			
+			# What to do when there's multiple modes in array? (because above line throws error when 2+ modes exists):
+				# Generate a list of unique elements along with how often they occur.
+				(values, counts) = np.unique(df['age'], return_counts=True)
+				# The location in the values list of the most-frequently-occurring element.
+				ind = np.argmax(counts)
+				# The most frequent element.
+				values[ind]
+				# The code above will handle data with multiple modes without raising an exception, but you'll get back just the first mode. If you want to push your understanding of Python you can challenge yourself to revise it to give you all of the modes.
+
 		# NumPy summary statistics
-		# (search term: numpy info -- note that info is NOT a function, but I mentally associate it as such)
 		{
 			''' import numpy as np
 			np.mean(x)
 			np.median(x)
 			'''
+			
+			# SD in Python (Thinkful)
+				# POPULATION standard deviation vs SAMPLE standard deviation
+					# A tricky default in numpy is to calculate the population standard deviation, dividing by n, 
+					# rather than the sample standard deviation, dividing by n - 1. 
+					# To calculate the sample instead of the population standard deviation we need to manually set the "delta degrees of freedom" with the ddof named parameter:
+					np.std(df['age'], ddof=1)
+					
+			# SE in Python (Thinkful)
+				se = s / (n ** 0.5)  # The formula for the standard error se of the mean is the standard deviation of the sample s divided by the square root of the sample size n.
+				np.std(df['age'] ,ddof=1) / np.sqrt(len(df['age']))
+				# The concept: The standard error quantifies uncertainty in the estimate of the sample mean, telling us about the precision of our SAMPLE MEAN ESTIMATE (while the standard deviation tells us about variance in the POPULATION).
+					# One example of standard errors at work: poll results, where they are called the "margin of error". 
+					# For example, a poll might report that 44% of respondents were in favor of measure X, with a margin of error (standard error) of 3%. In other words, if the poll were run over and over again with new samples of respondents, the average response would fall between 41% (44-3) and 47% (44+3). Smaller standard errors mean more precise estimates.
 
-			# Create np_height from np_baseball
-			# This gets only the first column
-			np_height = np_baseball[:,0]
 
-			# Print out the standard deviation on height. Replace 'None'
-			stddev = np.std(np_baseball[:,0])
-			print("Standard Deviation: " + str(stddev))
 
-			# Print out correlation between first and second column. Replace 'None'
-			corr = np.corrcoef(np_baseball[:,0], np_baseball[:,1])
-			print("Correlation: " + str(corr))
+			# from DataCamp
+				# standard deviation on height. Replace 'None'
+				stddev = np.std(np_baseball[:,0])
+				print("Standard Deviation: " + str(stddev))
 
+				# correlation between first and second column. Replace 'None'
+				corr = np.corrcoef(np_baseball[:,0], np_baseball[:,1])
+				print("Correlation: " + str(corr))
 
 			# precondition: heights and positions are available as lists
-
-			# Import numpy
-			import numpy as np
 
 			# Convert positions and heights to numpy arrays: np_positions, np_heights
 			np_positions = np.array(positions)
@@ -479,6 +1141,11 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 	https://www.analyticsvidhya.com/blog/2015/01/scikit-learn-python-machine-learning-tool/
 
 		Scikit-learn is probably the most useful library for machine learning in Python. It is on NumPy, SciPy and matplotlib, this library contains a lot of effiecient tools for machine learning and statistical modeling including classification, regression, clustering and dimensionality reduction.
+			''' scipy - package that contains scientific functions in Python
+			e.g. subpackage linalg
+			example: this imports only the Linear Algebra inverse function '''
+			from scipy.linalg import inv as my_inv
+
 
 		CONS (disadvantages)
 		Please note that scikit-learn is used to build models. It should NOT be used for reading the data, manipulating and summarizing it. There are better libraries for that (e.g. NumPy, Pandas etc.)
@@ -519,7 +1186,8 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 			# library: Pandas (i think)
 			# Exploratory
 			{
-				describe()
+				describe() # returns summary statistics (mean, std, min, max, etc.)
+					data.groupby('gender').describe()
 				value_counts()	# occurs in 3 examples
 				hist()
 				boxplot()
@@ -528,6 +1196,15 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 
 			# data frame intro
 			{
+				# from Jeremy Langley, expert Pandas guy at Python Meetup
+				# to familiarize myself with the data
+					df.ndim
+					df.info()
+					df.describe
+					df.describe()
+					# to get the number of rows / dataframe length / dimension of dataframe:
+						len(df) # number of rows
+					
 				# from Udemy course:
 				# how to build a data frame:
 				{
@@ -544,12 +1221,15 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 										   'col3':['abc','def','ghi','xyz']})
 				}
 			
-				import pandas as pd
-				train = pd.read_csv("https://s3-ap-southeast-1.amazonaws.com/av-datahack-datacamp/train.csv")
-				test = pd.read_csv("https://s3-ap-southeast-1.amazonaws.com/av-datahack-datacamp/test.csv")
+				# from analyticsvidhya.com
+				{
+					import pandas as pd
+					train = pd.read_csv("https://s3-ap-southeast-1.amazonaws.com/av-datahack-datacamp/train.csv")
+					test = pd.read_csv("https://s3-ap-southeast-1.amazonaws.com/av-datahack-datacamp/test.csv")
 
-				print (train.head(5) )
+					print (train.head(5) )
 
+				}
 				# Store total number of observation in training dataset
 				train_length = len (train)
 
@@ -558,6 +1238,16 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 
 				# pandas data frame from Udemy course:
 				{
+					# IMPORTANT AND VALUABLE: TIME SERIES!!
+						# convert from string into type=timestamp (despite the method name being to_datetime)
+						df['timeStamp'] = pd.to_datetime(df['timeStamp'])
+						
+						time = df['timeStamp'][0]
+						# these are valuable timestamp methods:
+							time.second, time.minute, time.hour, time.day, time.week, time.month, time.year
+							time.weekday_name, 
+							# There are SO MANY -- in Jupyter notebook, type "time." and then press TAB!
+					
 					import pandas as pd
 					import numpy as np
 					from numpy.random import randn
@@ -565,29 +1255,38 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 					df = pd.DataFrame(randn(5,4),index='A B C D E'.split(),columns='W X Y Z'.split())
 
 					# get column names (colnames)
-					df.columns.tolist()
+					WRONG: df.column.to_list()
+					--->--->--->--->--->--->	RIGHT: df.columns.tolist()
+					
+					df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'}, inplace=True)
+
 					
 					### Selection and Indexing
-						df['W']
-						df[['W','Z']]
-						df['new'] = df['W'] + df['Y']
-						## Removing Columns
-						df.drop('new',axis=1)
-						df.drop('new',axis=1,inplace=True)
-						## removing rows
-						df.drop('E',axis=0)
-						## Selecting Rows
-						df.loc['A']
-						df.iloc[2]
-						df.loc['B','Y']
-						df.loc[['A','B'],['W','Y']]
-					### Conditional Selection
-						df>0
-						df[df>0]
-						df[df['W']>0]
-						df[df['W']>0]['Y']
-						df[df['W']>0][['Y','X']]
-						df[(df['W']>0) & (df['Y'] > 1)]
+						### FOR REFERENCE!!!!!!
+						df = pd.DataFrame(randn(5,4),index='A B C D E'.split(),columns='W X Y Z'.split())
+						### A B C D E are indices (rows)
+						### W X Y Z are columns!
+						### FOR REFERENCE!!!!!!
+							df['W']
+							df[['W','Z']]
+							df['new'] = df['W'] + df['Y']
+							## Removing Columns
+							df.drop('new',axis=1)
+							df.drop('new',axis=1,inplace=True)
+							## removing rows
+							df.drop('E',axis=0)
+							## Selecting Rows
+							df.loc['A']
+							df.iloc[2]
+							df.loc['B','Y']
+							df.loc[['A','B'],['W','Y']]
+						### Conditional Selection
+							df>0
+							df[df>0]
+							df[df['W']>0]
+							df[df['W']>0]['Y']
+							df[df['W']>0][['Y','X']]
+							df[(df['W']>0) & (df['Y'] > 1)]
 					# Reset to default 0,1...n index
 						df.reset_index()
 						newind = 'CA NY WY OR CO'.split()
@@ -629,6 +1328,7 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 
 					# concatenation, merging and joining
 					{
+						
 						pd.concat([df1,df2,df3])
 						pd.concat([df1,df2,df3],axis=1)
 
@@ -1117,7 +1817,9 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 	#To get a copy of an array, we use an explicit method
 		arr_copy = arr.copy()
 		# otherwise creating a slice of an array still points to the same memory addresses of original array
-
+			# www on selecting and indexing, maybe slicing too
+				# http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing
+	
 	# array operators
 		arr = np.arange(0,10)
 		np.sqrt(arr)
@@ -1172,12 +1874,21 @@ https://docs.google.com/document/d/19lIPZ64GT_e6JdU212FNobrOqeIdnlQFo0OTzGKamrc/
 		list_A = [[1,1,1,1], [1,0,0,0], [0,1,0,0], [0,0,1,1]]
 		np.linalg.det(list_A)
 
+	''' Another scipy.py example i've done
+	'''
+		from scipy.misc import imread, imsave, imresize
+		img = imread('chx.png')
+
+		from scipy.spatial.distance import pdist, squareform
+		# each row is a point in 2D space
+		x = np.array([[0, 1], [1, 0], [2, 0]])
+
+		d = squareform(pdist(x, 'euclidean'))
+		
 }
 
 # udemy: python for data science and machine learning bootcamp
 # this course covers: NumPy, SciPy, Pandas, Seaborn, SciKit-Learn, MatplotLib, Plotly, PySpark
-
-jupyter notebook
 
 # what is a kernel?  A kernel is just an instance that's running, e.g. an instance of Python.
 ''' a tuple uses () instead of square brackets [], which are used by lists
@@ -1216,16 +1927,7 @@ jupyter notebook
 					out = [item**2 for item in x]
 
 		# function
-			def my_func(param1='default'):
-				print(param1)
-
-			def square(num):
-				"""
-				This function returns the square.
-				"""
-				return num**2
-
-			# To read about the function: type its name, then click shift+tab.
+			# To read about the function in Jupyter Notebooks: type its name, then click shift+tab.
 
 		# map function
 			# map() is used on functions
@@ -1238,6 +1940,9 @@ jupyter notebook
 		# lambda expressions, aka anonymous functions
 			# easier alternative to map()
 			# reason: we may not want to define an entire function (like times2() above), since instead of a function, we're often using one-time code lines.
+			# www on lambda func
+				# https://docs.python.org/3.6/tutorial/controlflow.html#lambda-expressions
+				# https://pythonconquerstheuniverse.wordpress.com/2011/08/29/lambda_tutorial/
 
 			# rewriting times2() into a lambda expression
 				lambda var:var*2
@@ -1248,22 +1953,98 @@ jupyter notebook
 			list(filter(lambda num: num%2 == 0, [1,2,3,4,5]))
 
 		# methods: useful ones
-			# best string methods
+			# loop on a string (my example)
+			for char in text:
+				if not char.isalpha():
+					text = text.replace(char, "")
+					
+			def alphabet_position(text):
+				return ' '.join(str(ord(c) - 96) for c in text.lower() if c.isalpha())
+			
+			# ============================================================
+			# BEST STRING METHODS
+			# BEST STRING METHODS
+				# "Format" a string by replacing `{}` with the arguments you
+				# supply to the function.
+				'Player {} has {} hit points remaining'.format(1, 42)
+				'My favorite drink is {} with {} dashes of {}'.format('whiskey', 3, 'bitters')
+				# str.format()
+					planet = "Earth"
+					diameter = 12742
+					'The diameter of {0} is {1} kilometers'.format(planet, diameter)
+					'The diameter of {} is {} kilometers'.format(planet, diameter)
+				
+				# strip away white space
+				"  asdf  ".strip()
+				>>> "asdf"
+				# replace
+				"hello there".replace("e", "3")
+				
+				# Find the index of the first occurrence of a substring. 
+				'hello'.find('l')
+				'world'.find('l')
+
+				# capitalize first character.
+				'hello'.capitalize()
 				str1 = 'hello my name is Sam'
-				str1.lower()
-				str1.upper()
+
+				# Returns boolean: Check the end of a string.
+				'hello'.endswith('o')
+
 				str2 = 'Hiking POV along the #palipuka ridge. Not the best idea to keep looking down.  #hawaii #hiking #palipuka'
 				str2.split('#')
+				# Join a list of strings into one single string. Try passing a
+				# different string into this method.
+				'_'.join(['The', 'quick', 'brown', 'fox'])
+				
+				poem = '''
+				Beautiful is better than ugly.
+				Explicit is better than implicit.
+				Simple is better than complex.
+				Complex is better than complicated.
+				'''
+				array = poem.split(". ")
+				return ".\n".join(array)
+				
+				# Check whether all characters are numeric.
+				'1337'.isdecimal()
+				'p2p'.isdecimal()
+				# Check whether all characters are alpha.
+				'hello'.isalpha()
+				'p2p'.isalpha()
+			# BEST STRING METHODS
+			# ============================================================
 
+			
 			# best dictionary methods
 				dict1 = {'k1': 1,'k2': 2}
 				dict1.keys()
 				dict1.items()
 				dict1.values()
 
-			# best list methods
-				l1 = [1,2,3,4,5]
-				l1.pop()
+			# ============================================================
+			# BEST LIST METHODS
+				# sort()  (no return value)
+					>>> words = ['car', 'boat', 'apple', 'banana']
+					>>> words.sort()
+					>>> print(words)
+					['apple', 'banana', 'boat', 'car']
+					>>>
+					>>> ids = [15, 26, 41, 1]
+					>>> ids.sort()
+					>>> print(ids)
+					[1, 15, 26, 41]				
+				
+				# index()
+					>>> fowl = ['duck', 'duck', 'goose', 'duck']
+					>>> fowl.index('goose')
+					2
+					>>> fowl.index('duck')
+					0
+				
+				# pop()
+					l1 = [1,2,3,4,5]
+					l1.pop()
 					l1
 					x = l1.pop()
 					x
@@ -1271,9 +2052,19 @@ jupyter notebook
 					first = l1.pop(0)
 					l1
 
-				l1.append('new')
-				'x' in [1,2,3]
-				'x' in ['x','y','z']
+				# append()	(no return value)
+					l1.append('new')
+					'x' in [1,2,3]
+					'x' in ['x','y','z']
+				
+				# insert()
+					numbers = ['one', 'two', 'four']
+					numbers.insert(2, 'three')
+					print(numbers)
+					['one', 'two', 'three', 'four']
+			# BEST LIST METHODS
+			# ============================================================
+
 
 			# best tuple methods
 				# tuple unpacking
@@ -1283,139 +2074,6 @@ jupyter notebook
 						print(a)
 						print(b)
 	}
-
-	# Numpy
-	{
-		# built-in methods
-
-	}
-
-# matplotlib in Udemy
-{
-	# matplotlib concepts
-	
-		# only for jupyter notebooks
-			%matplotlib inline
-		# if you are using another editor, you'll use: ...
-			plt.show() 
-			# ... at the end of all your plotting commands to have the figure pop up in another window.
-		
-		# (sub-optimal method) function-oriented approach
-			plt.plot(x, y, 'r') # 'r' is the color red
-			plt.xlabel('X Axis Title Here')
-			plt.ylabel('Y Axis Title Here')
-			plt.title('String Title Here')
-			# plt.subplot(nrows, ncols, plot_number)
-			plt.subplot(1,2,1)
-			plt.plot(x, y, 'r--') # More on color options later
-			plt.subplot(1,2,2)
-			plt.plot(y, x, 'g*-');		
-		
-		# OBJECT-ORIENTED METHOD: 
-		  # BEST way to use matplotlib: 
-		  # We'll instantiate figure objects, and then we'll call methods or attributes from that object
-			fig = plt.figure()
-			axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
-				# parameters, in order: left, bottom, width, height
-			axes.plot(x,y)
-			axes.set_xlabel('X Label')
-			axes.set_ylabel('Y Label')
-			axes.set_title('Set Title')
-			
-			# Creates blank canvas
-			fig = plt.figure()
-
-			axes1 = fig.add_axes([0.1, 0.1, 0.8, 0.8]) # main axes
-			axes2 = fig.add_axes([0.2, 0.5, 0.4, 0.3]) # inset axes
-
-			# Larger Figure Axes 1
-			axes1.plot(x, y, 'b')
-			axes1.set_xlabel('X_label_axes2')
-			axes1.set_ylabel('Y_label_axes2')
-			axes1.set_title('Axes 2 Title')
-
-			# Insert Figure Axes 2
-			axes2.plot(y, x, 'r')
-			axes2.set_xlabel('X_label_axes2')
-			axes2.set_ylabel('Y_label_axes2')
-			axes2.set_title('Axes 2 Title');			
-			
-	# SUBPLOTS (in object-oriented matplotlib approach)
-		# Use similar to plt.figure() except use tuple unpacking to grab fig and axes
-		fig, axes = plt.subplots()
-
-		# Now use the axes object to add stuff to plot
-		axes.plot(x, y, 'r')
-		axes.set_xlabel('x')
-		axes.set_ylabel('y')
-		axes.set_title('title');
-
-		# specify the number of rows and columns
-			# Empty canvas of 1 by 2 subplots
-			fig, axes = plt.subplots(nrows=1, ncols=2)		
-			
-		# Axes is an array of axes to plot on
-		axes
-
-		for ax in axes:
-			ax.plot(x, y, 'b')
-			ax.set_xlabel('x')
-			ax.set_ylabel('y')
-			ax.set_title('title')
-
-		# Display the figure object    
-		fig
-
-		# A common issue with matplolib is overlapping subplots or figures. We can use fig.tight_layout() or plt.tight_layout() method, which automatically adjusts the positions of the axes on the figure canvas so that there is no overlapping content:
-			fig, axes = plt.subplots(nrows=3, ncols=3)
-			# option 1
-				plt.tight_layout()
-				# [ option 2 - doesn't quite work, does it?  		​fig.tight_layout() ]
-				
-			fig, axes = plt.subplots(nrows=1, ncols=2)
-				# axes is an array, so i can iterate throught it
-				for ax in axes:
-					ax.plot(x, y, 'g')
-					ax.set_xlabel('x')
-					ax.set_ylabel('y')
-					ax.set_title('title')
-
-				axes[0].plot(x,y)
-				axes[0].set_title('Plot 1')
-				axes[1].plot(y,x)
-				axes[1].set_title('Plot 2')
-			fig    
-			plt.tight_layout()
-			
-		# Figure size, aspect ratio and DPI
-			fig = plt.figure(figsize=(8,4), dpi=100)
-						
-			fig, axes = plt.subplots(figsize=(12,3))
-
-			axes.plot(x, y, 'r')
-			axes.set_xlabel('x')
-			axes.set_ylabel('y')
-			axes.set_title('title');			
-		
-		# Saving figures
-			fig.savefig("filename.jpg")
-			fig.savefig("filename.png", dpi=200)
-			
-		# labels and titles
-			ax.set_title("title");
-			ax.set_xlabel("x")
-			ax.set_ylabel("y");
-			
-		# Legends
-			fig = plt.figure()
-
-			ax = fig.add_axes([0,0,1,1])
-
-			ax.plot(x, x**2, label="x**2")
-			ax.plot(x, x**3, label="x**3")
-			ax.legend()
-			ax.legend(loc=2)
-}
 
 # Seaborn in Udemy
 {
@@ -1459,6 +2117,9 @@ jupyter notebook
 		sns.barplot(x='sex', y='total_bill', data=tips, estimator=np.std) # req'd: import numpy as np
 		
 		sns.countplot(x='sex', data=tips)
+		# These two examples produce identical graphs:
+			sns.countplot(x='Reason', data=df, palette='viridis')
+			sns.countplot(x=df['Reason'], palette='viridis')
 		
 		sns.boxplot(x='day', y='total_bill', data=tips)
 		sns.boxplot(x='day', y='total_bill', data=tips, hue='smoker')
@@ -1608,3 +2269,62 @@ jupyter notebook
 				https://stanford.edu/~mwaskom/software/seaborn/tutorial/aesthetics.html
 
 }
+
+# Plotly and Cufflinks
+{
+	# Plotly: interactive plots
+	# a library that allows you to create interactive plots that you can use in dashboards or websites (you can save them as html files or static images).
+	
+	# command line/terminal using:
+		pip install plotly
+		pip install cufflinks
+		
+		from plotly import __version__
+		from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+
+		print(__version__) # requires version >= 1.9.0
+		
+		import cufflinks as cf
+		# For Notebooks
+		init_notebook_mode(connected=True)		
+		# For offline use
+		cf.go_offline()		
+		
+		# fake data
+			df = pd.DataFrame(np.random.randn(100,4),columns='A B C D'.split())
+			df2 = pd.DataFrame({'Category':['A','B','C'],'Values':[32,43,50]})
+			
+	## Using Cufflinks and iplot()
+		# * scatter			
+			df.iplot(kind='scatter',x='A',y='B',mode='markers',size=10)
+		# * bar			
+			df2.iplot(kind='bar',x='Category',y='Values')
+			# Titanic dataset: another example:
+				import cufflinks as cf
+				cf.go_offline()
+				train['Fare'].iplot(kind='hist',bins=30,color='green')
+
+		# * box			
+			df.iplot(kind='box')
+		# * spread			
+			df[['A','B']].iplot(kind='spread')
+		# * ratio			
+		# * heatmap			
+		# * surface			
+			df3 = pd.DataFrame({'x':[1,2,3,4,5],'y':[10,20,30,20,10],'z':[5,4,3,2,1]})
+			df3.iplot(kind='surface',colorscale='rdylbu')
+		# * histogram			
+			df['A'].iplot(kind='hist',bins=25)
+		# * bubble			
+			df.iplot(kind='bubble',x='A',y='B',size='C')
+		## scatter_matrix() -- Similar to sns.pairplot()	
+			df.scatter_matrix()
+	
+}
+# www on unicode: https://docs.python.org/3/howto/unicode.html
+
+**kwargs is a dictionary of keyword arguments. The ** allows us to pass any number of keyword arguments. A keyword argument is basically a dictionary.
+**kwargs are just like *args except you declare the variables and the amount within the function arguments.
+
+Udemy Machine Learning
+(see other file)
