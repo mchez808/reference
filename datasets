@@ -1,0 +1,21 @@
+some data sets of exploration value:
+
+https://archive.ics.uci.edu/ml/datasets.html
+    In particular:
+    - Las Vegas Strip Data Set (small: n < 1000)   
+    + Finance
+     - Bank Marketing Data Set (n = 45211)
+     - Stock portfolio performance Data Set (small: n < 1000)
+    + Geospatial
+     - Forest type mapping Data Set 
+     - Crowdsourced Mapping Data Set 
+    + (recommendation systems that records the behavior of customers)
+     - KASANDR Data Set (huge: n = 17764280)
+    + FMA: A Dataset For Music Analysis
+       - Code & data: https://github.com/mdeff/fma
+         - note: having an error when trying to open: unable to copy
+    - Energy efficiency (small: n < 1000)   
+    
+    
+from Thinkful:
+  https://github.com/Thinkful-Ed/data-201-resources/blob/master/data-sources.md
